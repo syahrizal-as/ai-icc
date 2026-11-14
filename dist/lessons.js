@@ -47,10 +47,10 @@ const modules = [
     },
     dataset: true,
     steps: [
-      'Pilih CSV sintetis dan buka di spreadsheet. Jika data klien disetujui, ikuti bagian Praktik dengan data klien. Catat nama file, jumlah baris dan kolom di bagian 02.',
+      'Pilih CSV sintetis dan buka di spreadsheet. Untuk literasi media, gunakan Data mentah di buku kerja. Jika data klien disetujui, ikuti bagian Praktik dengan data klien. Catat sumber, jumlah baris, dan kolom.',
       'Unggah salinan ke platform AI yang disetujui. Pakai prompt audit sesuai jenis data, lalu simpan tabel temuan.',
       'Periksa temuan langsung pada salinan sumber. Untuk CSV sintetis, cek ID ganda, skor kosong atau di luar rentang, format tanggal, dan kategori. Untuk data klien, ikuti aturan dari kamus kolom.',
-      'Pisahkan koreksi yang pasti dari nilai yang perlu dikonfirmasi. Simpan versi bersih di salinan baru serta catat baris yang dikeluarkan dari rekap.',
+      'Pisahkan koreksi pasti dari nilai yang perlu dikonfirmasi. Untuk kasus literasi media, isi Hasil peserta dan Log audit. Untuk kasus lain, simpan file bersih terpisah dan catat jejaknya di Log audit.',
       'Bandingkan jumlah baris dan ID unik sebelum serta sesudah koreksi. Jelaskan selisihnya.'
     ],
     check: ['Apakah skor kosong boleh diganti dengan rata-rata saat audit?', 'Tandai BUKTI TIDAK CUKUP dan keluarkan baris dari rekap skor sampai nilainya dikonfirmasi.'],

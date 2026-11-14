@@ -1,0 +1,10 @@
+SOP TINDAK LANJUT UMPAN BALIK V1
+
+Pasal 1. Ruang lingkup
+Berlaku untuk catatan masuk sebelum 1 November 2026. Gunakan tanggal catatan masuk untuk memilih versi.
+
+Pasal 2. Batas tindak lanjut
+Tim evaluasi mencatat tindak lanjut awal paling lambat 14 hari kalender setelah tanggal catatan masuk.
+
+Pasal 3. Data yang diperlukan
+Gunakan ID catatan, tanggal masuk, dan status. Jika tanggal tidak tersedia, minta konfirmasi. Identitas responden tidak disertakan.

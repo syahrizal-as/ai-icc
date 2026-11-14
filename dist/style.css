@@ -84,6 +84,14 @@ p { margin: 0 }
 .practice-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 }
 .practice-actions label { font-size: .84rem; font-weight: 750 }
 .practice-actions select { min-height: 37px; max-width: 100%; color: var(--navy); background: var(--white); border: 1px solid #b7c8d0; border-radius: 7px; padding: 5px 10px; font-size: .86rem }
+.dataset-kit { padding: clamp(16px, 3vw, 28px); border: 1px solid var(--line); background: var(--tint); border-radius: 9px }
+.dataset-kit .eyebrow { margin-bottom: 7px }
+.dataset-kit p:not(.eyebrow), .dataset-task p { margin-top: 8px }
+.dataset-kit .practice-actions { margin-bottom: 0 }
+.dataset-task { margin-top: 22px; padding-top: 17px; border-top: 1px solid var(--line) }
+.dataset-task h4, .dataset-task-title { margin: 0; font-size: 1rem }
+.dataset-task-title { margin-top: 24px }
+.dataset-result { color: var(--muted); font-size: .91rem }
 .text-link { display: inline-block; color: var(--blue); font-weight: 700; margin-top: 16px }
 
 .agenda-list { padding: 0; margin: 0; list-style: none; border-top: 1px solid #c8d6dc }
