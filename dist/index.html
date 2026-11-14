@@ -14,10 +14,10 @@
   <a class="skip" href="#materi">Lewati ke materi</a>
   <header class="site-header">
     <nav class="wrap nav" aria-label="Navigasi utama">
-      <a class="brand" href="#beranda"><span class="brand-ai">AI</span><span>PELATIHAN PRAKTIS</span></a>
+      <a class="brand" href="#beranda"><img src="assets/logo-icc.png" width="301" height="111" alt="ICC Indonesian Certification Center"></a>
       <button type="button" class="menu" aria-controls="nav-links" aria-expanded="false">Menu <span aria-hidden="true">≡</span></button>
       <div class="nav-links" id="nav-links">
-        <a href="#program">Program</a><a href="#agenda">Agenda</a><a href="#materi">Materi</a>
+        <a href="#program">Program</a><a href="#agenda">Agenda</a><a href="#materi">Materi</a><a href="#dataset">Dataset</a>
         <a href="#kompetensi">Kompetensi</a><a class="nav-cta" href="#persiapan">Checklist kelas <span aria-hidden="true">↗</span></a>
       </div>
     </nav>
@@ -29,7 +29,7 @@
         <h1>Pelatihan AI<br>Praktis untuk<br><em>Bank Indonesia</em></h1>
         <p class="hero-description">Kerjakan satu proyek AI dari data mentah hingga prototipe. Periksa hasilnya terhadap sumber, uji saat terjadi gangguan, dan dokumentasikan perbaikannya.</p>
         <div class="actions">
-          <a class="button primary" href="#materi">Jelajahi materi <span aria-hidden="true">↗</span></a>
+          <a class="button primary" href="#dataset">Unduh dataset <span aria-hidden="true">↓</span></a>
           <a class="button secondary" href="#agenda">Lihat agenda <span aria-hidden="true">↓</span></a>
         </div>
       </div>
@@ -98,7 +98,28 @@
       <div class="accordion" id="modules"></div>
     </section>
 
-    <section class="tinted" id="kompetensi" aria-labelledby="kompetensi-title">
+    <section class="tinted" id="dataset" aria-labelledby="dataset-title">
+      <div class="wrap section">
+        <div class="section-lead">
+          <p class="eyebrow">BAHAN PRAKTIK</p>
+          <h2 id="dataset-title">Dataset siap diunggah ke AI</h2>
+          <p>Pilih satu kasus. Unduh CSV, unggah ke platform AI yang disetujui penyelenggara, lalu salin prompt di bawah. Setiap file berisi 25 baris data sintetis dengan masalah validasi yang sengaja ditanamkan.</p>
+        </div>
+        <div class="dataset-grid" id="dataset-cases"></div>
+        <div class="accordion guidance dataset-guide">
+          <details open>
+            <summary>Prompt audit data untuk semua kasus</summary>
+            <div class="guidance-body">
+              <p>Unggah satu file CSV terlebih dahulu. Prompt ini meminta AI mengecek struktur, menemukan masalah, dan mengusulkan koreksi yang bisa Anda periksa.</p>
+              <button class="button primary copy-button" type="button" data-copy="dataset-prompt">Salin prompt audit</button>
+              <pre id="dataset-prompt"></pre>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="kompetensi" aria-labelledby="kompetensi-title">
       <div class="wrap section">
         <div class="section-lead">
           <p class="eyebrow">KOMPETENSI</p>

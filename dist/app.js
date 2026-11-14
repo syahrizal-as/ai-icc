@@ -54,6 +54,15 @@ modules.filter(module => module.prompt).forEach(module => {
   document.querySelector('#prompt-' + module.id).textContent = module.prompt;
 });
 document.querySelector('#master-prompt').textContent = masterPrompt;
+document.querySelector('#dataset-prompt').textContent = datasetPrompt;
+document.querySelector('#dataset-cases').innerHTML = datasetCases.map(([id, title, summary]) => `
+  <article class="dataset-card">
+    <h3>${title}</h3><p>${summary}</p>
+    <a class="button secondary copy-button" href="dataset/latihan-${id}.csv" aria-label="Unduh CSV ${title}" download>Unduh CSV <span aria-hidden="true">↓</span></a>
+  </article>`).join('');
+
+const dataPractice = document.querySelector('#blok-data .module-body');
+dataPractice.insertAdjacentHTML('beforeend', '<a class="text-link" href="#dataset">Unduh dataset dan salin prompt audit ↗</a>');
 
 function filterModules(day) {
   const query = search.value.trim().toLocaleLowerCase('id');
