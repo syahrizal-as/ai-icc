@@ -178,7 +178,6 @@ const modules = [
 ];
 
 const agenda = [
-  ['Fondasi dan kesiapan data', modules.slice(0, 2)],
-  ['Proyek briefing dan verifikasi', modules.slice(2, 4)],
-  ['Simulasi, pengujian, dan demo', modules.slice(4)]
+  ['Hari 1 · Pengantar AI, data, dan verifikasi', modules.slice(0, 4)],
+  ['Hari 2 · Simulasi, pengujian, dan demo', modules.slice(4)]
 ];
