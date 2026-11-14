@@ -1,9 +1,19 @@
 const modules = [
   {
-    id: 'orientasi', day: 1, title: 'Orientasi dan pemilihan kasus',
-    output: 'Kanvas kasus dengan ukuran berhasil dan penanggung jawab.',
+    id: 'orientasi', day: 1, title: 'Pengantar AI dan pemilihan kasus',
+    output: 'Contoh ringkasan yang diperiksa dan kanvas kasus dengan ukuran berhasil.',
     unit: 'Persiapan untuk enam unit',
-    steps: ['Kerjakan pre-test berbasis skenario.', 'Pilih satu pekerjaan yang berulang, punya sumber yang jelas, dan hasilnya dapat diperiksa.', 'Tulis masalah, pengguna, keluaran, manfaat, ukuran berhasil, risiko, dan penanggung jawab manusia.']
+    concepts: [
+      ['AI generatif', 'Jenis AI yang membuat keluaran baru dari instruksi, misalnya ringkasan, gambar, atau kode.'],
+      ['Model AI', 'Sistem yang dilatih dari data untuk memproses masukan dan menghasilkan jawaban. GPT adalah contoh keluarga model bahasa.'],
+      ['Aplikasi AI', 'Tempat Anda memakai model dan memberi instruksi. ChatGPT adalah contoh aplikasi untuk bercakap dengan model.']
+    ],
+    steps: [
+      'Tempel prompt contoh ke ChatGPT atau platform yang disetujui. Periksa apakah ringkasannya mempertahankan angka 12 dan 3 serta menandai penyebab sebagai BUKTI TIDAK CUKUP.',
+      'Kerjakan pre-test berbasis skenario. Pilih satu pekerjaan berulang dengan sumber yang jelas dan hasil yang bisa diperiksa.',
+      'Tulis masalah, pengguna, keluaran, manfaat, ukuran berhasil, risiko, dan penanggung jawab manusia.'
+    ],
+    prompt: 'Ringkas catatan simulasi ini menjadi dua poin singkat. Pertahankan angka sesuai sumber. Jika penyebab keterlambatan tidak disebutkan, tulis “Penyebab keterlambatan: BUKTI TIDAK CUKUP”.\n\nCatatan: Tim menerima 12 permintaan. Sebanyak 3 permintaan terlambat ditangani. Penyebab keterlambatan belum tercatat.'
   },
   {
     id: 'data', day: 1, title: 'Pemasukan dan validasi data',
