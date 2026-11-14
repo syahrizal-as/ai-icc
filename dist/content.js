@@ -1,78 +1,3 @@
-const modules = [
-  {
-    id: 'orientasi', day: 1, title: 'Pengantar AI dan pemilihan kasus',
-    output: 'Contoh ringkasan yang diperiksa dan kanvas kasus dengan ukuran berhasil.',
-    unit: 'Persiapan untuk enam unit',
-    concepts: [
-      ['AI generatif', 'Jenis AI yang membuat keluaran baru dari instruksi, misalnya ringkasan, gambar, atau kode.'],
-      ['Model AI', 'Sistem yang dilatih dari data untuk memproses masukan dan menghasilkan jawaban. GPT adalah contoh keluarga model bahasa.'],
-      ['Aplikasi AI', 'Tempat Anda memakai model dan memberi instruksi. ChatGPT adalah contoh aplikasi untuk bercakap dengan model.']
-    ],
-    steps: [
-      'Tempel prompt contoh ke ChatGPT atau platform yang disetujui. Periksa apakah ringkasannya mempertahankan angka 12 dan 3 serta menandai penyebab sebagai BUKTI TIDAK CUKUP.',
-      'Kerjakan pre-test berbasis skenario. Pilih satu pekerjaan berulang dengan sumber yang jelas dan hasil yang bisa diperiksa.',
-      'Tulis masalah, pengguna, keluaran, manfaat, ukuran berhasil, risiko, dan penanggung jawab manusia.'
-    ],
-    prompt: 'Ringkas catatan simulasi ini menjadi dua poin singkat. Pertahankan angka sesuai sumber. Jika penyebab keterlambatan tidak disebutkan, tulis “Penyebab keterlambatan: BUKTI TIDAK CUKUP”.\n\nCatatan: Tim menerima 12 permintaan. Sebanyak 3 permintaan terlambat ditangani. Penyebab keterlambatan belum tercatat.'
-  },
-  {
-    id: 'data', day: 1, title: 'Pemasukan dan validasi data',
-    output: 'Dataset bersih, log pemasukan, kamus data, dan laporan validitas.',
-    unit: 'J.63OPR00.014.2 · J.63OPR00.015.2',
-    steps: ['Catat sumber, izin, format, dan jumlah data sebelum pemasukan.', 'Periksa kolom wajib, tipe, format, data kosong, duplikasi, konsistensi, dan nilai tidak wajar.', 'Koreksi data, jalankan pemeriksaan ulang, dan simpan sampel perubahan.']
-  },
-  {
-    id: 'integrasi', day: 1, title: 'Integrasi alur dan komponen AI',
-    output: 'Diagram integrasi, dua versi prompt atau konfigurasi, dan log revisi.',
-    unit: 'J.62AIN00.014.1',
-    steps: ['Hubungkan input tervalidasi, komponen AI, keluaran, dan titik pemeriksaan manusia.', 'Tulis prompt versi pertama dan jalankan pada contoh data yang diizinkan.', 'Periksa keluaran, revisi prompt, jalankan kembali, dan bandingkan hasil.'],
-    prompt: 'Anda membantu [PERAN] mencapai [TUJUAN]. Gunakan hanya [SUMBER] yang disediakan dan keluarkan hasil dalam [FORMAT OUTPUT]. Pisahkan fakta, asumsi, dan rekomendasi. Cantumkan rujukan untuk fakta. Jika sumber tidak mendukung klaim, tulis BUKTI TIDAK CUKUP. Tambahkan daftar pemeriksaan untuk peninjau manusia.'
-  },
-  {
-    id: 'verifikasi', day: 1, title: 'Verifikasi klaim sebelum pemasangan',
-    output: 'Matriks klaim dan sumber serta checklist kesiapan pemasangan.',
-    unit: 'Mendukung J.63OPR00.015.2 dan J.62AIN00.015.1',
-    steps: ['Pilih minimal lima klaim atau angka dari keluaran AI. Sertakan satu informasi yang sengaja tidak tersedia.', 'Telusuri sumber asli dan catat status setiap klaim.', 'Koreksi atau hapus klaim keliru dan tandai klaim tanpa sumber sebagai BUKTI TIDAK CUKUP.'],
-    prompt: 'Bandingkan [KELUARAN] dengan [SUMBER ASLI]. Buat tabel klaim, sumber, status, dan koreksi. Salin angka sesuai sumber. Untuk klaim yang tidak didukung, tulis BUKTI TIDAK CUKUP. Tunjukkan item yang harus diperiksa manual.'
-  },
-  {
-    id: 'pemasangan', day: 2, title: 'Pemasangan dan uji fungsi dasar',
-    output: 'Checklist prasyarat, catatan pemasangan, dan hasil smoke test.',
-    unit: 'J.62AIN00.015.1',
-    steps: ['Siapkan lingkungan latihan, akses, data uji, dan konfigurasi tanpa kredensial dalam portofolio.', 'Pasang prototipe dan jalankan alur dari input hingga keluaran.', 'Catat hasil uji fungsi dasar, versi prototipe, dan kendala. Tinjau kemajuan bersama instruktur.']
-  },
-  {
-    id: 'uji', day: 2, title: 'Uji skenario dan rencana perawatan',
-    output: 'Matriks tujuh skenario dan jadwal pemantauan, pemulihan, serta eskalasi.',
-    unit: 'J.62AIN00.016.1',
-    steps: ['Uji input normal, data tidak lengkap, angka atau kategori salah, permintaan di luar lingkup, permintaan data pribadi, klaim tanpa sumber, dan instruksi manipulatif di dokumen.', 'Catat hasil yang diharapkan, hasil aktual, status, dan perbaikan untuk tiap skenario.', 'Tentukan indikator, jadwal, penanggung jawab, pengendalian akses, pencadangan, rollback, dan prosedur eskalasi.'],
-    prompt: 'Bantu susun rencana perawatan untuk [PROTOTIPE] dari [HASIL UJI]. Buat tabel objek yang dirawat, indikator, jadwal, penanggung jawab, dan tindakan saat gagal. Sertakan akses, cadangan, pemulihan versi, dan eskalasi. Tandai PERLU KONFIRMASI untuk bagian yang belum mempunyai dasar. Penanggung jawab manusia memeriksa rencana.'
-  },
-  {
-    id: 'perawatan', day: 2, title: 'Simulasi perawatan dan uji ulang',
-    output: 'Tiket perawatan, bukti sebelum dan sesudah, serta keputusan lanjut atau rollback.',
-    unit: 'J.62AIN00.017.1',
-    steps: ['Pilih satu kegagalan terkontrol dan simpan bukti awal.', 'Diagnosis penyebab dan perbaiki prompt, data, konfigurasi, atau prosedur.', 'Uji ulang kasus gagal dan fungsi yang sebelumnya berjalan. Catat perubahan dan putuskan lanjut atau kembali ke versi sebelumnya.']
-  },
-  {
-    id: 'demonstrasi', day: 2, title: 'Demonstrasi berbasis bukti',
-    output: 'Demo individual dengan satu kegagalan dan perbaikannya.',
-    unit: 'Portofolio praktik',
-    steps: ['Jelaskan masalah, sumber, proses, prompt, dan hasil.', 'Tunjukkan bukti pemeriksaan, satu skenario gagal, dan perbaikannya.', 'Jelaskan batas penggunaan dan keputusan manusia. Gunakan peninjau paralel bila jumlah peserta membutuhkannya.']
-  }
-];
-
-const days = {
-  1: {
-    title: 'Dari kasus kerja ke alur AI yang aman',
-    closing: { title: 'Tinjauan rekan dan refleksi', output: 'Catat satu keberhasilan, kegagalan, dan risiko yang masih terbuka.' }
-  },
-  2: {
-    title: 'Pemasangan, pengujian, dan demonstrasi',
-    closing: { title: 'Post-test dan rencana penerapan', output: 'Rencanakan satu proses, data yang diizinkan, peninjau, dan ukuran berhasil dalam 30 hari.' }
-  }
-};
-
 const units = [
   ['J.63OPR00.014.2', 'Melakukan Pemasukan Data', 'Masukkan data dari sumber yang disetujui dan periksa struktur serta format.', 'Log pemasukan, sumber, struktur atau jumlah data, dan penanganan kesalahan.'],
   ['J.63OPR00.015.2', 'Memastikan Validitas Data', 'Periksa tipe, format, nilai kosong, duplikasi, konsistensi, dan pencilan.', 'Aturan validasi, laporan sebelum dan sesudah, dan sampel koreksi.'],
@@ -98,7 +23,7 @@ const readiness = [
   ['alat', 'Platform AI, laptop, akun, internet, dan penanggung jawab ditetapkan.'],
   ['data', 'Dataset master dan variasi kasus lolos pemeriksaan privasi.'],
   ['peserta', 'Setiap peserta mendapat dataset, ringkasan tugas, dan folder individual.'],
-  ['materi', 'Workbook, rubrik, pre-test, dan post-test sesuai capaian.'],
+  ['materi', 'Lembar kerja, rubrik, dan cek pemahaman sesuai capaian.'],
   ['uji', 'Tujuh skenario dapat dijalankan ulang dan paket luring telah diuji.'],
   ['asesmen', 'Status skema dikonfirmasi tertulis dan draf pemetaan serta MUK ditinjau asesor.'],
   ['simulasi', 'Uji coba satu jalur selesai, termasuk variasi kasus akademik.']
@@ -123,7 +48,7 @@ const datasetPrompt = [
 
 const masterPrompt = [
   'Buat paket “Paket Materi PBK AI Praktis — Bank Indonesia” dalam Bahasa Indonesia. Gunakan satu agenda, workbook, rubrik dan standar bukti untuk seluruh kelompok, termasuk satu peserta berlatar Dosen Fakultas Dakwah dan Komunikasi. Variasikan konteks kasus, data, istilah, dan bentuk artefak individual.',
-  'Profil: [JUMLAH PESERTA], [FUNGSI PEKERJAAN], [BIDANG DOSEN]. Durasi dan fasilitas: [DURASI], [PLATFORM AI], [LAPTOP, INTERNET, AKUN]. Jika informasi belum ada, tandai PERLU KONFIRMASI. Gunakan rancangan dasar dua hari jika durasi belum diketahui.',
+  'Profil: [JUMLAH PESERTA], [FUNGSI PEKERJAAN], [BIDANG DOSEN]. Durasi dan fasilitas: [DURASI], [PLATFORM AI], [LAPTOP, INTERNET, AKUN]. Jika informasi belum ada, tandai PERLU KONFIRMASI. Susun satu sesi empat jam. Gunakan pola kenali, lihat contoh, coba sendiri, dan cek pemahaman. Letakkan tautan bahan unduh dekat prompt masing-masing.',
   'Gunakan skema klaster LSP Ditekindo SKEMA.14.01/AI/VII/2025, Penerapan Artificial Intelligence (AI) Untuk Proses Data. Enam unit formal:',
   units.map(([code, title]) => code + ' ' + title).join('\n'),
   'Jika dokumen elemen/KUK/MUK resmi belum tersedia, petakan pada tingkat unit dan tandai VALIDASI ASESOR/LSP DIPERLUKAN. Keputusan kompetensi dan MUK final merupakan kewenangan asesor/LSP.',

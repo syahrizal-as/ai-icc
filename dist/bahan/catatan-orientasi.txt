@@ -1,0 +1,11 @@
+CATATAN SIMULASI — RISET LAYANAN
+Semua informasi dalam file ini fiktif dan hanya untuk latihan.
+
+Kasus A
+Tim menerima 12 permintaan pada hari Senin. Sebanyak 3 permintaan terlambat ditangani. Penyebab keterlambatan belum tercatat.
+
+Kasus B
+Tim menerima 8 pertanyaan tentang panduan layanan. Sebanyak 5 sudah dijawab. Catatan belum memuat jadwal untuk 3 pertanyaan tersisa.
+
+Kasus C
+Tim meninjau draf FAQ berisi 6 pertanyaan. Sebanyak 2 pertanyaan masih memerlukan rujukan. Catatan belum memuat tanggal terbit.

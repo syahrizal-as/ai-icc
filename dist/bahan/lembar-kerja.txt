@@ -1,0 +1,40 @@
+LEMBAR KERJA PELATIHAN AI PRAKTIS
+Simpan salinan pribadi. Pakai data sintetis yang dibagikan dan beri penanda pada hasil simulasi.
+
+01 — PENGANTAR DAN KASUS
+Kasus latihan:
+Angka yang saya cek:
+Informasi yang belum tersedia:
+Tugas kerja yang dipilih / pengguna / hasil / ukuran keberhasilan / risiko:
+
+02 — PEMASUKAN DAN VALIDASI
+Nama file / sumber / jumlah baris / ID unik:
+Baris | ID | Kolom | Nilai asli | Aturan | Tindakan | Status
+Rekap sebelum dan sesudah koreksi:
+
+03 — INTEGRASI
+Sumber → prompt → keluaran → peninjau:
+Prompt v1 dan hasil:
+Perubahan ke v2 dan alasannya:
+Prompt v2 dan hasil:
+
+04 — VERIFIKASI
+Klaim | Rujukan | Status | Koreksi
+Keputusan siap ditinjau / revisi:
+
+05 — SIMULASI PEMASANGAN
+Platform latihan / versi konfigurasi / sumber / akses:
+Uji fungsi dasar: harapan / hasil aktual / status / bukti:
+
+06 — UJI DAN RENCANA PERAWATAN
+Skenario | Hasil diharapkan | Hasil aktual | Lulus atau gagal | Tindakan
+Objek yang dirawat | Indikator | Jadwal | Penanggung jawab | Cadangan | Eskalasi
+
+07 — PERBAIKAN
+Tiket / hasil sebelum / dugaan sebab / perubahan v2:
+Uji ulang T03 / T01 / T06:
+Keputusan lanjut atau pemulihan versi dan alasannya:
+
+08 — DEMO
+Masalah / bahan / prompt / keluaran / bukti / kegagalan / perbaikan:
+Rencana 30 hari / peninjau / ukuran berhasil:
