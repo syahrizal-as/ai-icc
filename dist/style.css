@@ -113,8 +113,15 @@ summary:hover { background: #f2f6f7; border-radius: inherit }
 .concepts dd { margin: 3px 0 0; color: var(--muted); font-size: .92rem }
 .practice-steps { padding-inline-start: 22px; margin: 10px 0 14px }
 .practice-steps li + li { margin-top: 5px }
-.practice h4 { margin: 16px 0 5px; font-size: .88rem }
-.practice pre { background: var(--navy); color: var(--white) }
+.text-box { margin-top: 12px; border-radius: 8px; background: var(--navy); color: var(--white) }
+.text-box-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px 12px; padding: 7px 10px 7px 12px; border-bottom: 1px solid #ffffff30; background: #ffffff0d }
+.text-box-header h4, .example-output-title { margin: 0; font-size: .88rem }
+.text-box-actions { display: flex; flex-wrap: wrap; gap: 6px }
+.text-box-actions .copy-button { display: inline-flex; align-items: center; color: var(--white); background: #ffffff14; border: 1px solid #ffffff55; border-radius: 5px; text-decoration: none }
+.text-box-actions .copy-button:hover { background: #ffffff29 }
+.text-box pre { margin: 0; background: transparent; color: inherit }
+.example-output-title { margin-top: 16px }
+.example-output { margin-top: 5px; border: 1px solid var(--line); background: #f1f5f6 }
 .answer { margin-top: 12px }
 .answer summary { grid-template-columns: 1fr auto }
 .answer p { margin: 0 18px 15px }

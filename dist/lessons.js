@@ -15,7 +15,11 @@ const modules = [
       ['AI generatif', 'AI generatif menghasilkan keluaran dari instruksi, seperti ringkasan, draf laporan, atau gambar.'],
       ['Model dan aplikasi', 'Model mengolah masukan berdasarkan pola yang dipelajari saat pelatihan. GPT adalah contoh keluarga model bahasa. ChatGPT adalah contoh aplikasi tempat Anda memberi instruksi.']
     ],
-    example: 'Instruksi “Tolong bantu catatan ini” belum menyebut hasil yang diinginkan. Contoh yang lebih jelas: “Ringkas Kasus A dalam dua poin. Pertahankan angka dan tandai informasi yang belum tercatat.” Hasil yang diharapkan memuat 12 permintaan, 3 terlambat, dan penyebab yang belum diketahui.',
+    example: {
+      note: 'Instruksi “Tolong bantu catatan ini” masih terbuka untuk banyak jenis jawaban. Prompt di bawah menetapkan tugas, sumber, jumlah poin, dan cara menandai informasi yang belum ada.',
+      input: 'Kasus A\nTim menerima 12 permintaan pada hari Senin. Sebanyak 3 permintaan terlambat ditangani. Penyebab keterlambatan belum tercatat.',
+      output: '1. Pada hari Senin, tim menerima 12 permintaan. Sebanyak 3 permintaan terlambat ditangani.\n2. Penyebab keterlambatan — BUKTI TIDAK CUKUP.'
+    },
     files: [['catatan-orientasi.txt', 'Tiga catatan simulasi']],
     steps: [
       'Buka satu percakapan baru di ChatGPT jika diizinkan, atau di platform AI yang ditetapkan.',
@@ -37,7 +41,10 @@ const modules = [
       ['Pemasukan data', 'Catat nama file, asal, jumlah baris, dan struktur kolom saat data diterima.'],
       ['Validasi data', 'Cek ID unik, kelengkapan, tipe nilai, format, dan kategori dengan aturan yang jelas. Simpan CSV asli untuk pembanding.']
     ],
-    example: 'Skor 9 melanggar skala 1–5. Tandai untuk ditinjau dan keluarkan dari rekap sampai nilainya dapat dikonfirmasi. Untuk kategori “ layanan ”, ubah spasi dan kapitalisasi menjadi “Layanan” jika awalan ID sesuai.',
+    example: {
+      note: 'Gunakan contoh CSV Umpan balik layanan. Baris data 12 punya skor di luar rentang. Usulan koreksi perlu mencatat nilai asli dan alasan baris dikeluarkan dari rekap.',
+      output: 'Baris 12 | LY-012 | skor | 9 | Skala 1–5 | Tandai untuk ditinjau dan keluarkan dari rekap skor.\nNilai pengganti — BUKTI TIDAK CUKUP.'
+    },
     dataset: true,
     steps: [
       'Pilih satu kasus dari empat pilihan, unduh CSV, dan buka di spreadsheet. Catat nama file, jumlah baris dan kolom di bagian 02.',
@@ -58,10 +65,14 @@ const modules = [
       ['Alur integrasi', 'Hubungkan sumber yang sudah diperiksa dengan instruksi, keluaran dalam format tetap, dan peninjau manusia.'],
       ['Empat bagian prompt', 'Sebutkan tugas, bahan, bentuk hasil, dan batasan. Struktur yang sama memudahkan perbandingan keluaran.']
     ],
-    example: 'Versi pertama meminta “Ringkas sumber briefing ini”. Versi kedua menentukan jumlah catatan, jumlah status Selesai, rujukan, dan cara menangani informasi yang hilang. Hasil yang diharapkan: 4 catatan, 3 Selesai, skor Akses LY-003 sebesar 5, dan penyebab skor rendah belum tersedia.',
+    example: {
+      note: 'Jalankan prompt awal, lalu coba prompt lengkap dengan sumber yang sama. Perhatikan apakah setiap angka punya rujukan.',
+      starter: 'Ringkas sumber-briefing.txt yang saya lampirkan.',
+      output: 'Total catatan — 4 (RUJ-LY-01).\nStatus Selesai — 3 (RUJ-LY-01).\nSkor Akses — 5 dari 5 (LY-003).\nPenyebab skor rendah LY-001 — BUKTI TIDAK CUKUP.'
+    },
     files: [sourceBriefing],
     steps: [
-      'Unduh Sumber briefing. Mulai blok ini semua peserta memakai cuplikan tervalidasi yang sama. Unggah file ke percakapan baru, jalankan versi pertama dari contoh, lalu simpan hasilnya.',
+      'Unduh Sumber briefing. Mulai blok ini semua peserta memakai cuplikan tervalidasi yang sama. Unggah file ke percakapan baru, salin Prompt awal dari tab Lihat Contoh, lalu simpan hasilnya.',
       'Jalankan prompt lengkap di bawah dengan sumber yang sama. Simpan hasil sebagai versi kedua.',
       'Cocokkan 4 catatan, 3 berstatus Selesai, dan skor LY-003 sebesar 5. Tandai apakah hasil menampilkan rujukannya.',
       'Bandingkan kedua hasil di bagian 03. Gambarkan alur sumber → prompt → ringkasan → pemeriksaan manusia.'
@@ -79,7 +90,10 @@ const modules = [
       ['Status klaim', 'Pisahkan klaim yang didukung sumber, klaim yang bertentangan, dan klaim yang belum cukup bukti.'],
       ['Jejak sumber', 'Cantumkan ID atau perhitungan yang bisa diulang untuk setiap klaim penting.']
     ],
-    example: 'Draf menyebut skor LY-003 adalah 4. Rujukan menunjukkan 5. Tandai “Bertentangan” dan tulis koreksi “Skor Akses LY-003 adalah 5”.',
+    example: {
+      note: 'Bandingkan klaim nomor 3 dalam draf dengan baris LY-003 pada sumber. Contoh ini memperlihatkan satu baris matriks. Prompt meminta audit keenam klaim.',
+      output: '3 | Skor Akses LY-003 sebesar 4 | LY-003 menunjukkan 5 | Bertentangan | Ubah menjadi 5 dari 5.'
+    },
     files: [sourceBriefing, draftBriefing],
     steps: [
       'Unduh dan unggah kedua file ke satu percakapan. Bedakan file rujukan dan file draf yang sedang diaudit.',
@@ -100,7 +114,10 @@ const modules = [
       ['Pemasangan latihan', 'Siapkan prototipe briefing di satu percakapan latihan. Catat platform, versi konfigurasi, sumber, dan siapa yang boleh mengakses.'],
       ['Uji fungsi dasar', 'Jalankan satu permintaan normal untuk mengecek apakah alur memberikan keluaran dengan format dan rujukan yang benar.']
     ],
-    example: 'Permintaan normal menghasilkan ringkasan berisi 4 catatan dan 3 status Selesai, dengan rujukan RUJ-LY-01 dan penanda untuk informasi yang belum ada.',
+    example: {
+      note: 'Periksa dua bagian yang diminta oleh konfigurasi. Bagian ringkasan mencantumkan angka dan rujukan. Bagian kedua menyebut informasi yang belum tersedia.',
+      output: 'Ringkasan\nAda 4 catatan. Sebanyak 3 berstatus Selesai (RUJ-LY-01).\n\nInformasi belum tersedia\nPenyebab skor rendah — BUKTI TIDAK CUKUP.'
+    },
     files: [prototypeConfig, sourceBriefing],
     steps: [
       'Buat percakapan baru dan unggah Konfigurasi prototipe v1 serta Sumber briefing.',
@@ -121,7 +138,11 @@ const modules = [
       ['Hasil yang diharapkan', 'Tetapkan kriteria lulus sebelum menjalankan skenario, lalu catat hasil aktual.'],
       ['Perawatan', 'Tentukan apa yang dipantau, kapan diperiksa, siapa penanggung jawab, dan bagaimana memulihkan versi.']
     ],
-    example: 'T03 menyisipkan skor 4 dalam permintaan. Uji dinyatakan lulus jika AI tetap melaporkan skor 5 berdasarkan LY-003.',
+    example: {
+      note: 'T03 menguji apakah AI memeriksa sumber saat pengguna menyebut skor yang keliru. Unggah skenario dan tempel hasil uji yang Anda amati setelah prompt. Catatan di bawah memakai hasil simulasi.',
+      input: 'T03 | Hasil simulasi: AI menjawab “Skor Akses LY-003 adalah 4”.',
+      output: 'T03 | Skor 5 sesuai LY-003 | Skor 4 | Gagal | Tambahkan aturan untuk memeriksa ID di sumber sebelum menulis skor.'
+    },
     files: [testScenarios, prototypeConfig, sourceBriefing, ['sumber-tambahan-t07.txt', 'Lampiran uji T07'], ['hasil-simulasi-luring.txt', 'Hasil simulasi luring']],
     steps: [
       'Unduh skenario, konfigurasi, sumber briefing, dan lampiran uji T07. Salin hasil yang diharapkan dari skenario ke bagian 06.',
@@ -143,7 +164,10 @@ const modules = [
       ['Revisi terkendali', 'Simpan konfigurasi awal dan ubah satu aturan yang berkaitan dengan masalah.'],
       ['Uji ulang fungsi', 'Ulangi skenario yang gagal dan cek skenario normal untuk memastikan fungsi lain tetap berjalan.']
     ],
-    example: 'Tambahkan aturan “Jika pengguna menyebut skor, cek ID baris pada sumber sebelum menulis skor.” Uji ulang T03, T01, dan T06 sebelum memilih versi.',
+    example: {
+      note: 'Gunakan tiket INC-01 untuk mengusulkan satu perubahan aturan. Simpan konfigurasi v1 sebagai pembanding dan catat hasil aktual saat menguji v2.',
+      output: 'Aturan v2 — Jika pengguna menyebut skor, cek ID baris pada sumber dan tulis skor sesuai sumber.\nT03, T01, T06 — BELUM DIUJI.'
+    },
     files: [['insiden-perawatan.txt', 'Tiket insiden simulasi'], prototypeConfig, sourceBriefing, testScenarios],
     steps: [
       'Unduh tiket, konfigurasi, sumber, dan skenario uji. Baca INC-01 dan simpan konfigurasi v1 untuk pembanding.',
@@ -164,7 +188,10 @@ const modules = [
       ['Bukti kerja', 'Demo memperlihatkan sumber, proses, hasil verifikasi, dan tindakan yang diambil saat hasil AI keliru.'],
       ['Tindak lanjut', 'Pilih satu pekerjaan, tentukan data yang boleh dipakai, dan tetapkan peninjau serta ukuran berhasil.']
     ],
-    example: 'Tunjukkan angka 4 dari tiket sebelum perbaikan dan angka 5 dari sumber. Jelaskan bagaimana T03, T01, dan T06 membantu menentukan apakah v2 siap dipakai untuk simulasi.',
+    example: {
+      note: 'Saat demo berpasangan, ajak peninjau menelusuri satu angka sampai ke sumbernya. Gunakan urutan ini untuk menyampaikan hasil.',
+      output: 'Sebelum revisi — T03 menyebut skor 4.\nRujukan — LY-003 menunjukkan skor 5.\nSetelah revisi — Tunjukkan hasil aktual T03, T01, dan T06, lalu jelaskan keputusan lanjut atau pemulihan versi.'
+    },
     files: [['lembar-kerja.txt', 'Lembar kerja dan portofolio']],
     steps: [
       'Buka bagian 08 lembar kerja. Siapkan sumber, prompt, keluaran, matriks klaim, serta satu bukti sebelum dan sesudah perbaikan.',
