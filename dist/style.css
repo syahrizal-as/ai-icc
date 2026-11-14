@@ -77,9 +77,11 @@ p { margin: 0 }
 .outcomes article, .unit-card { background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 20px }
 .outcomes p, .unit-card p { color: var(--muted); font-size: .92rem; margin-top: 9px }
 .facilitator { padding-bottom: clamp(54px, 7.4vw, 106px) }
-.facilitator-card { display: grid; grid-template-columns: .87fr 1.13fr; gap: clamp(24px, 5vw, 72px); padding: clamp(24px, 4vw, 52px); background: var(--white); border: 1px solid var(--line); border-left: 4px solid var(--blue); border-radius: 10px }
+.facilitator-card { display: grid; grid-template-columns: .75fr 1.25fr; gap: clamp(24px, 5vw, 72px); padding: clamp(24px, 4vw, 52px); background: var(--white); border: 1px solid var(--line); border-left: 4px solid var(--blue); border-radius: 10px }
 .facilitator-role { margin-top: 11px; color: var(--blue); font-weight: 700 }
 .facilitator-detail p { margin-top: 7px; color: var(--muted) }
+.facilitator-detail ul { margin: 7px 0 0; padding-inline-start: 1.2em; color: var(--muted) }
+.facilitator-detail li + li { margin-top: 4px }
 .facilitator-detail h3:not(:first-child) { margin-top: 19px }
 .practice-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 }
 .practice-actions label { font-size: .84rem; font-weight: 750 }
