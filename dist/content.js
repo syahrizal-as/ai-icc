@@ -48,7 +48,7 @@ const datasetPrompt = [
 
 const masterPrompt = [
   'Buat paket “Paket Materi PBK AI Praktis — Bank Indonesia” dalam Bahasa Indonesia. Gunakan satu agenda, workbook, rubrik dan standar bukti untuk seluruh kelompok, termasuk satu peserta berlatar Dosen Fakultas Dakwah dan Komunikasi. Variasikan konteks kasus, data, istilah, dan bentuk artefak individual.',
-  'Profil: [JUMLAH PESERTA], [FUNGSI PEKERJAAN], [BIDANG DOSEN]. Durasi dan fasilitas: [DURASI], [PLATFORM AI], [LAPTOP, INTERNET, AKUN]. Jika informasi belum ada, tandai PERLU KONFIRMASI. Susun satu sesi empat jam. Gunakan pola kenali, lihat contoh, coba sendiri, dan cek pemahaman. Letakkan tautan bahan unduh dekat prompt masing-masing.',
+  'Profil: [JUMLAH PESERTA], [FUNGSI PEKERJAAN], [BIDANG DOSEN]. Fasilitas: [PLATFORM AI], [LAPTOP, INTERNET, AKUN]. Jika informasi belum ada, tandai PERLU KONFIRMASI. Susun agenda berdasarkan Hari 1 dan Hari 2 dengan urutan kegiatan. Gunakan pola kenali, lihat contoh, coba sendiri, dan cek pemahaman. Letakkan tautan bahan unduh dekat prompt masing-masing.',
   'Gunakan skema klaster LSP Ditekindo SKEMA.14.01/AI/VII/2025, Penerapan Artificial Intelligence (AI) Untuk Proses Data. Enam unit formal:',
   units.map(([code, title]) => code + ' ' + title).join('\n'),
   'Jika dokumen elemen/KUK/MUK resmi belum tersedia, petakan pada tingkat unit dan tandai VALIDASI ASESOR/LSP DIPERLUKAN. Keputusan kompetensi dan MUK final merupakan kewenangan asesor/LSP.',
