@@ -50,18 +50,29 @@ const datasetActions = `
     <pre id="dataset-prompt"></pre>
   </div>`;
 
-moduleGrid.innerHTML = modules.map((module, index) => `
+moduleGrid.innerHTML = modules.map((module, index) => {
+  const prompt = module.prompt ? `<div class="prompt"><h3>Contoh prompt</h3><pre id="prompt-${module.id}"></pre><button class="button secondary copy-button" type="button" data-copy="prompt-${module.id}">Salin prompt</button></div>` : '';
+  return `
   <details id="blok-${module.id}">
     <summary><span class="module-index">${String(index + 1).padStart(2, '0')}</span><span>${module.title}<span class="module-meta">Hari ${module.day}</span></span></summary>
     <div class="module-body">
+      ${module.concepts ? `
+        <div class="module-intro">
+          <h3>AI generatif, model, dan aplikasi</h3>
+          <dl>${module.concepts.map(([term, definition]) => `<div><dt>${term}</dt><dd>${definition}</dd></div>`).join('')}</dl>
+          <p>Model bisa keliru meski jawabannya terdengar meyakinkan. Cocokkan fakta dan angka dengan sumber.</p>
+          <a href="https://openai.com/index/introducing-gpt-5/" target="_blank" rel="noopener">Rujukan OpenAI tentang model GPT ↗</a>
+          ${prompt}
+        </div>` : ''}
       <div class="module-columns">
         <div><h3>Langkah praktik</h3><ol>${module.steps.map(step => `<li>${step}</li>`).join('')}</ol></div>
         <div><h3>Bukti kerja</h3><p>${module.output}</p><p><strong>Pemetaan</strong> · ${module.unit}</p></div>
       </div>
       ${module.id === 'data' ? datasetActions : ''}
-      ${module.prompt ? `<div class="prompt"><h3>Contoh prompt</h3><pre id="prompt-${module.id}"></pre><button class="button secondary copy-button" type="button" data-copy="prompt-${module.id}">Salin prompt</button></div>` : ''}
+      ${module.concepts ? '' : prompt}
     </div>
-  </details>`).join('');
+  </details>`;
+}).join('');
 
 modules.filter(module => module.prompt).forEach(module => {
   document.querySelector('#prompt-' + module.id).textContent = module.prompt;
@@ -83,7 +94,7 @@ function filterModules(day) {
   filters.forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.day) === day)));
   let count = 0;
   for (const module of modules) {
-    const searchable = [module.title, module.output, module.unit, ...module.steps].join(' ').toLocaleLowerCase('id');
+    const searchable = [module.title, module.output, module.unit, ...module.steps, ...(module.concepts?.flat() ?? [])].join(' ').toLocaleLowerCase('id');
     const visible = (day === 0 || module.day === day) && searchable.includes(query);
     document.getElementById('blok-' + module.id).hidden = !visible;
     if (visible) count += 1;
