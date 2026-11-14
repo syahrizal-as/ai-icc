@@ -1,6 +1,6 @@
 KONFIGURASI SIMULASI PROTOTIPE BRIEFING — V1
 Lingkungan: satu percakapan baru di platform AI latihan yang disetujui.
-Sumber rujukan: sumber-briefing.txt (RUJ-LY-01).
+Sumber rujukan: sumber-briefing.txt (RUJ-AK-01).
 Input yang diperbolehkan: permintaan briefing berdasarkan rujukan yang dilampirkan.
 Penanggung jawab: peserta memeriksa hasil sebelum menyimpan atau menggunakan draf.
 

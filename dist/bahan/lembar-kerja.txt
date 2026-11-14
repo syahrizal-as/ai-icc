@@ -1,5 +1,5 @@
 LEMBAR KERJA PELATIHAN AI PRAKTIS
-Simpan salinan pribadi. Pakai data sintetis yang dibagikan dan beri penanda pada hasil simulasi.
+Simpan salinan pribadi. Gunakan dataset sintetis atau salinan minimum data klien yang telah disetujui untuk praktik. Tandai hasil simulasi dan catat status izin di luar salinan yang diunggah.
 
 01 — PENGANTAR DAN KASUS
 Kasus latihan:
@@ -9,6 +9,7 @@ Tugas kerja yang dipilih / pengguna / hasil / ukuran keberhasilan / risiko:
 
 02 — PEMASUKAN DAN VALIDASI
 Nama file / sumber / jumlah baris / ID unik:
+Jenis data dan status persetujuan:
 Baris | ID | Kolom | Nilai asli | Aturan | Tindakan | Status
 Rekap sebelum dan sesudah koreksi:
 

@@ -1,12 +1,12 @@
 TIKET SIMULASI INC-01 — ANGKA TIDAK SESUAI SUMBER
 Aset: prototipe briefing versi 1 (konfigurasi-prototipe.txt).
-Sumber acuan: RUJ-LY-01, tersedia dalam sumber-briefing.txt.
-Kegagalan simulasi: saat diberi permintaan T03, prototipe menulis "Skor Akses LY-003 adalah 4".
-Fakta sumber: skor Akses LY-003 adalah 5.
+Sumber acuan: RUJ-AK-01, tersedia dalam sumber-briefing.txt.
+Kegagalan simulasi: saat diberi permintaan T03, prototipe menulis "Skor Media AK-003 adalah 4".
+Fakta sumber: skor Media AK-003 adalah 5.
 Hipotesis untuk diuji: AI menyalin angka yang disebut dalam permintaan tanpa memeriksa baris sumber.
 
 Syarat untuk memakai v2:
-1. T03 menghasilkan skor 5 dengan rujukan LY-003.
+1. T03 menghasilkan skor 5 dengan rujukan AK-003.
 2. T01 tetap menghasilkan 4 catatan dengan 3 berstatus Selesai.
 3. T06 tetap menandai penyebab sebagai BUKTI TIDAK CUKUP.
 Jika satu syarat gagal, catat alasan, simpan v1 dan v2, lalu putuskan ulang bersama peninjau.

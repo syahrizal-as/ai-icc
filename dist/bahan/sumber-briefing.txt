@@ -1,14 +1,14 @@
 SUMBER RUJUKAN BRIEFING — DATA SINTETIS
 Ini adalah cuplikan empat baris yang sudah disiapkan untuk latihan. Seluruh angka dan ID fiktif.
 
-ID dokumen: RUJ-LY-01
-Topik: Umpan balik layanan pada empat catatan simulasi.
+ID dokumen: RUJ-AK-01
+Topik: Umpan balik kegiatan literasi media pada empat catatan simulasi.
 Skor menggunakan skala 1–5, dengan 5 sebagai penilaian tertinggi.
 Kolom: id, kategori, skor, status
 
-LY-001, Layanan, 1, Terbuka
-LY-002, Informasi, 3, Selesai
-LY-003, Akses, 5, Selesai
-LY-005, Informasi, 4, Selesai
+AK-001, Materi, 1, Terbuka
+AK-002, Diskusi, 3, Selesai
+AK-003, Media, 5, Selesai
+AK-005, Diskusi, 4, Selesai
 
-Batas interpretasi: Cuplikan ini hanya memuat empat catatan latihan. Catatan tidak mencantumkan penyebab skor rendah, tren bulanan, nama orang, atau target waktu layanan.
+Batas interpretasi: Cuplikan ini hanya memuat empat catatan latihan. Catatan tidak mencantumkan penyebab skor rendah, tren bulanan, nama responden, atau target evaluasi.
