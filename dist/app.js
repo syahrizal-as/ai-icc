@@ -90,7 +90,8 @@ moduleGrid.innerHTML = modules.map((module, index) => {
   const stages = [
     `<dl class="concepts">${module.concepts.map(([term, definition]) => `<div><dt>${term}</dt><dd>${definition}</dd></div>`).join('')}</dl>
      ${id === 'orientasi' ? `<p>Cocokkan jawaban model dengan sumber. Pilihan model dan batas pemakaian bergantung pada akun. Jika mencapai batas, lanjutkan pemeriksaan manual dengan file latihan.</p><div class="practice-actions">${openGemini}<a class="button secondary copy-button" href="${geminiModelsHelp}" target="_blank" rel="noopener">Panduan model Gemini ↗</a><a class="button secondary copy-button" href="${geminiLimitsHelp}" target="_blank" rel="noopener">Batas pemakaian ↗</a></div>` : ''}
-     ${id === 'skill' ? `<a class="text-link" href="${gemHelp}" target="_blank" rel="noopener">Panduan resmi Gems ↗</a>` : ''}`,
+     ${id === 'skill' ? `<a class="text-link" href="${gemHelp}" target="_blank" rel="noopener">Panduan resmi Gems ↗</a>` : ''}
+     ${id === 'agent' ? `<a class="text-link" href="${agentHelp}" target="_blank" rel="noopener">Penjelasan AI agent dari Google Cloud ↗</a>` : ''}`,
     `<h3>Contoh dan hasil yang diharapkan</h3>
       <p>${module.example.note}</p>
       <div class="practice-actions">${openGemini}${materials(module, true)}</div>
