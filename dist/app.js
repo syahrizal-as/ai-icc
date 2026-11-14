@@ -83,6 +83,10 @@ const sopPractice = (id, isPractice = false) => `<div class="dataset-task"${isPr
 </div>`;
 
 const stageNames = ['Kenali', 'Lihat Contoh', 'Coba Sendiri', 'Cek Pemahaman'];
+const skillFields = prefix => textBox(prefix + '-skill-name', 'Nama keahlian', 'Salin nama')
+  + textBox(prefix + '-skill-description', 'Deskripsi keahlian', 'Salin deskripsi');
+const skillCases = prefix => skillRequests.map((_, i) =>
+  textBox(prefix + '-skill-request-' + i, 'Permintaan Kasus ' + (i === 0 ? 'A' : 'B'), 'Salin prompt')).join('');
 moduleGrid.innerHTML = modules.map((module, index) => {
   const id = module.id;
   const promptId = 'prompt-' + id;
@@ -90,14 +94,15 @@ moduleGrid.innerHTML = modules.map((module, index) => {
   const stages = [
     `<dl class="concepts">${module.concepts.map(([term, definition]) => `<div><dt>${term}</dt><dd>${definition}</dd></div>`).join('')}</dl>
      ${id === 'orientasi' ? `<p>Cocokkan jawaban model dengan sumber. Pilihan model dan batas pemakaian bergantung pada akun. Jika mencapai batas, lanjutkan pemeriksaan manual dengan file latihan.</p><div class="practice-actions">${openGemini}<a class="button secondary copy-button" href="${geminiModelsHelp}" target="_blank" rel="noopener">Panduan model Gemini ↗</a><a class="button secondary copy-button" href="${geminiLimitsHelp}" target="_blank" rel="noopener">Batas pemakaian ↗</a></div>` : ''}
-     ${id === 'skill' ? `<a class="text-link" href="${gemHelp}" target="_blank" rel="noopener">Panduan resmi Gems ↗</a>` : ''}
+     ${id === 'skill' ? `<a class="text-link" href="${skillHelp}" target="_blank" rel="noopener">Panduan resmi Keahlian Gemini ↗</a>` : ''}
      ${id === 'agent' ? `<a class="text-link" href="${agentHelp}" target="_blank" rel="noopener">Penjelasan AI agent dari Google Cloud ↗</a>` : ''}`,
     `<h3>Contoh dan hasil yang diharapkan</h3>
       <p>${module.example.note}</p>
       <div class="practice-actions">${openGemini}${materials(module, true)}</div>
       ${module.example.starter ? textBox('example-starter-' + id, 'Prompt awal', 'Salin prompt') : ''}
-      ${hasPrompt ? textBox('example-prompt-' + id, id === 'skill' ? 'Instruksi yang disimpan di Gem' : 'Prompt contoh', 'Salin prompt') : ''}
-      ${id === 'skill' ? gemRequests.map((_, i) => textBox('example-gem-request-' + i, 'Permintaan Kasus ' + (i === 0 ? 'A' : 'B'), 'Salin prompt')).join('') : ''}
+      ${id === 'skill' ? skillFields('example') : ''}
+      ${hasPrompt ? textBox('example-prompt-' + id, id === 'skill' ? 'Petunjuk keahlian · Asisten Akademik Dosen' : 'Prompt contoh', 'Salin prompt') : ''}
+      ${id === 'skill' ? skillCases('example') : ''}
       ${module.example.input ? textBox('example-input-' + id, 'Cuplikan bahan', 'Salin bahan') : ''}
       <h4 class="example-output-title">Contoh hasil</h4>
       <pre class="example-output" id="example-output-${id}"></pre>
@@ -111,8 +116,9 @@ moduleGrid.innerHTML = modules.map((module, index) => {
         ${materials(module)}
         ${module.dataset || ['verifikasi', 'pemasangan', 'uji', 'perawatan', 'demonstrasi'].includes(id) ? downloadMaterial('buku-kerja-pbk-fdk.xlsx', 'buku kerja Excel') : ''}
       </div>
-      ${hasPrompt ? textBox(promptId, id === 'skill' ? 'Instruksi yang disimpan di Gem' : 'Prompt siap pakai', module.dataset ? 'Salin prompt audit' : 'Salin prompt') : ''}
-      ${id === 'skill' ? gemRequests.map((_, i) => textBox('practice-gem-request-' + i, 'Permintaan Kasus ' + (i === 0 ? 'A' : 'B'), 'Salin prompt')).join('') : ''}
+      ${id === 'skill' ? skillFields('practice') : ''}
+      ${hasPrompt ? textBox(promptId, id === 'skill' ? 'Petunjuk keahlian · Asisten Akademik Dosen' : 'Prompt siap pakai', module.dataset ? 'Salin prompt audit' : 'Salin prompt') : ''}
+      ${id === 'skill' ? skillCases('practice') : ''}
       ${module.dataset ? `
         <details class="client-practice" id="data-klien">
           <summary>Praktik dengan data klien jika disetujui</summary>
@@ -163,9 +169,12 @@ document.querySelector('#prompt-ekstraksi').textContent = extractionPrompt;
 document.querySelector('#example-prompt-ekstraksi').textContent = extractionPrompt;
 document.querySelector('#prompt-sop').textContent = sopPrompt;
 document.querySelector('#example-prompt-sop').textContent = sopPrompt;
-for (const [index, request] of gemRequests.entries()) {
-  document.getElementById('example-gem-request-' + index).textContent = request;
-  document.getElementById('practice-gem-request-' + index).textContent = request;
+for (const prefix of ['example', 'practice']) {
+  document.getElementById(prefix + '-skill-name').textContent = skillName;
+  document.getElementById(prefix + '-skill-description').textContent = skillDescription;
+  for (const [index, request] of skillRequests.entries()) {
+    document.getElementById(prefix + '-skill-request-' + index).textContent = request;
+  }
 }
 
 const caseSelect = document.querySelector('#dataset-case');
