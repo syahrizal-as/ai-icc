@@ -1,6 +1,4 @@
 const search = document.querySelector('#search');
-const filters = [...document.querySelectorAll('[data-day]')];
-const tabs = [...document.querySelectorAll('[role="tab"]')];
 const agendaPanel = document.querySelector('#agenda-panel');
 const moduleGrid = document.querySelector('#modules');
 const menu = document.querySelector('.menu');
@@ -8,77 +6,74 @@ const nav = document.querySelector('#nav-links');
 const announcement = document.querySelector('#announcement');
 const storageKey = 'pbk-ai-praktis-kesiapan-v1';
 
-function showAgenda(day) {
-  const details = days[day];
-  const sessions = [...modules.filter(module => module.day === day), details.closing];
-  tabs.forEach((tab, index) => {
-    tab.setAttribute('aria-selected', String(index + 1 === day));
-    tab.tabIndex = index + 1 === day ? 0 : -1;
-  });
-  agendaPanel.setAttribute('aria-labelledby', tabs[day - 1].id);
-  agendaPanel.innerHTML = `
-    <div class="day-heading"><h3>${details.title}</h3></div>
-    <ol class="agenda-list">${sessions.map(session => `
+
+agendaPanel.innerHTML = agenda.map(([title, sessions]) => `
+  <div class="agenda-group">
+    <h3>${title}</h3>
+    <ol class="agenda-list">${sessions.map(module => `
       <li class="agenda-item">
-        <div><strong>${session.title}</strong><p>${session.output}</p></div>
-        ${session.id ? `<a href="#blok-${session.id}">Buka materi ↗</a>` : ''}
+        <div><strong>${module.title}</strong><p>${module.output}</p></div>
+        <a href="#blok-${module.id}">Buka materi ↗</a>
       </li>`).join('')}
-    </ol>`;
+    </ol>
+  </div>`).join('');
+
+function materials(module) {
+  if (module.dataset) {
+    return `
+      <label for="dataset-case">Pilih kasus</label>
+      <select id="dataset-case">${datasetCases.map(([id, title]) => `<option value="${id}">${title}</option>`).join('')}</select>
+      <a id="dataset-download" class="button secondary copy-button" href="dataset/latihan-${datasetCases[0][0]}.csv" download>Unduh CSV ↓</a>`;
+  }
+  return module.files.map(([file, label]) => `<a class="button secondary copy-button" href="bahan/${file}" download>Unduh ${label} ↓</a>`).join('');
 }
 
-tabs.forEach((tab, index) => {
-  tab.addEventListener('click', () => showAgenda(index + 1));
-  tab.addEventListener('keydown', event => {
-    const destination = { ArrowLeft: 1 - index, ArrowRight: 1 - index, Home: 0, End: 1 }[event.key];
-    if (destination === undefined) return;
-    event.preventDefault();
-    showAgenda(destination + 1);
-    tabs[destination].focus();
-  });
-});
-
-const datasetActions = `
-  <div class="prompt" id="dataset">
-    <h3>Dataset dan prompt audit</h3>
-    <p>Pilih satu kasus, unduh CSV, lalu unggah ke platform AI yang disetujui. Setiap file berisi 25 baris data sintetis untuk latihan validasi.</p>
-    <label for="dataset-case">Pilih kasus</label>
-    <div class="dataset-actions">
-      <select id="dataset-case">${datasetCases.map(([id, title]) => `<option value="${id}">${title}</option>`).join('')}</select>
-      <a id="dataset-download" class="button secondary copy-button" href="dataset/latihan-${datasetCases[0][0]}.csv" download>Unduh CSV <span aria-hidden="true">↓</span></a>
-      <button class="button primary copy-button" type="button" data-copy="dataset-prompt">Salin prompt audit</button>
-    </div>
-    <pre id="dataset-prompt"></pre>
-  </div>`;
-
+const stageNames = ['Kenali', 'Lihat Contoh', 'Coba Sendiri', 'Cek Pemahaman'];
 moduleGrid.innerHTML = modules.map((module, index) => {
-  const prompt = module.prompt ? `<div class="prompt"><h3>Contoh prompt</h3><pre id="prompt-${module.id}"></pre><button class="button secondary copy-button" type="button" data-copy="prompt-${module.id}">Salin prompt</button></div>` : '';
-  return `
-  <details id="blok-${module.id}">
-    <summary><span class="module-index">${String(index + 1).padStart(2, '0')}</span><span>${module.title}<span class="module-meta">Hari ${module.day}</span></span></summary>
-    <div class="module-body">
-      ${module.concepts ? `
-        <div class="module-intro">
-          <h3>AI generatif, model, dan aplikasi</h3>
-          <dl>${module.concepts.map(([term, definition]) => `<div><dt>${term}</dt><dd>${definition}</dd></div>`).join('')}</dl>
-          <p>Model bisa keliru meski jawabannya terdengar meyakinkan. Cocokkan fakta dan angka dengan sumber.</p>
-          <a href="https://openai.com/index/introducing-gpt-5/" target="_blank" rel="noopener">Rujukan OpenAI tentang model GPT ↗</a>
-          ${prompt}
-        </div>` : ''}
-      <div class="module-columns">
-        <div><h3>Langkah praktik</h3><ol>${module.steps.map(step => `<li>${step}</li>`).join('')}</ol></div>
-        <div><h3>Bukti kerja</h3><p>${module.output}</p><p><strong>Pemetaan</strong> · ${module.unit}</p></div>
+  const id = module.id;
+  const promptId = 'prompt-' + id;
+  const hasPrompt = module.prompt || module.dataset;
+  const stages = [
+    `<dl class="concepts">${module.concepts.map(([term, definition]) => `<div><dt>${term}</dt><dd>${definition}</dd></div>`).join('')}</dl>
+     ${id === 'orientasi' ? '<p>Model bisa keliru. Cocokkan fakta dan angka dengan sumber. <a href="https://openai.com/index/introducing-gpt-5/" target="_blank" rel="noopener">Rujukan model GPT ↗</a></p>' : ''}`,
+    `<h3>Contoh dan hasil yang diharapkan</h3><p>${module.example}</p>`,
+    `<div class="practice" ${module.dataset ? 'id="dataset"' : ''}>
+      <h3>${module.dataset ? 'Dataset dan prompt audit' : 'Langkah praktik'}</h3>
+      <div class="practice-actions">
+        ${materials(module)}
+        ${hasPrompt ? `<button class="button primary copy-button" type="button" data-copy="${promptId}">Salin ${module.dataset ? 'prompt audit' : 'prompt'}</button><a class="button secondary copy-button" data-prompt-file="${promptId}" download="prompt-${id}.txt">Unduh prompt TXT ↓</a>` : ''}
       </div>
-      ${module.id === 'data' ? datasetActions : ''}
-      ${module.concepts ? '' : prompt}
+      <ol class="practice-steps">${module.steps.map(step => `<li>${step}</li>`).join('')}</ol>
+      ${hasPrompt ? `<h4>Prompt siap pakai</h4><pre id="${promptId}"></pre>` : ''}
+      <p><strong>Jika AI belum bisa diakses.</strong> ${module.offline}</p>
+      <p><strong>Bukti yang disimpan.</strong> ${module.output}</p>
+    </div>`,
+    `<h3>${module.check[0]}</h3>
+     <details class="answer"><summary>Lihat pembahasan</summary><p>${module.check[1]}</p></details>
+     <p><strong>Pemetaan latihan</strong> · ${module.unit}</p>`
+  ];
+  return `<details class="module" id="blok-${id}">
+    <summary><span class="module-index">${String(index + 1).padStart(2, '0')}</span><span>${module.title}</span></summary>
+    <div class="module-body">
+      <div class="lesson-tabs" role="tablist" aria-label="Tahap ${module.title}">
+        ${stageNames.map((name, stage) => `<button type="button" role="tab" id="${id}-tab-${stage}" aria-controls="${id}-stage-${stage}" aria-selected="${stage === 0}" tabindex="${stage === 0 ? 0 : -1}" data-stage="${stage}">${stage + 1}. ${name}</button>`).join('')}
+      </div>
+      ${stages.map((body, stage) => `<div class="lesson-panel" role="tabpanel" id="${id}-stage-${stage}" aria-labelledby="${id}-tab-${stage}" tabindex="0"${stage ? ' hidden' : ''}>${body}</div>`).join('')}
     </div>
   </details>`;
 }).join('');
 
-modules.filter(module => module.prompt).forEach(module => {
-  document.querySelector('#prompt-' + module.id).textContent = module.prompt;
-});
+for (const module of modules) {
+  if (module.prompt || module.dataset) {
+    document.getElementById('prompt-' + module.id).textContent = module.dataset ? datasetPrompt : module.prompt;
+  }
+}
 document.querySelector('#master-prompt').textContent = masterPrompt;
-document.querySelector('#dataset-prompt').textContent = datasetPrompt;
+document.querySelectorAll('[data-prompt-file]').forEach(link => {
+  const content = document.getElementById(link.dataset.promptFile).textContent;
+  link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content + '\n');
+});
+
 const caseSelect = document.querySelector('#dataset-case');
 const datasetDownload = document.querySelector('#dataset-download');
 function updateDatasetDownload() {
@@ -89,30 +84,59 @@ caseSelect.addEventListener('change', updateDatasetDownload);
 window.addEventListener('pageshow', updateDatasetDownload);
 updateDatasetDownload();
 
-function filterModules(day) {
-  const query = search.value.trim().toLocaleLowerCase('id');
-  filters.forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.day) === day)));
-  let count = 0;
-  for (const module of modules) {
-    const searchable = [module.title, module.output, module.unit, ...module.steps, ...(module.concepts?.flat() ?? [])].join(' ').toLocaleLowerCase('id');
-    const visible = (day === 0 || module.day === day) && searchable.includes(query);
-    document.getElementById('blok-' + module.id).hidden = !visible;
-    if (visible) count += 1;
+function showStage(tab) {
+  for (const item of tab.parentElement.querySelectorAll('[role="tab"]')) {
+    const selected = item === tab;
+    item.setAttribute('aria-selected', String(selected));
+    item.tabIndex = selected ? 0 : -1;
+    document.getElementById(item.getAttribute('aria-controls')).hidden = !selected;
   }
-  document.querySelector('#module-count').textContent = count ? `${count} blok materi` : 'Tidak ada blok yang cocok. Coba kata kunci lain atau pilih Semua.';
 }
 
-filters.forEach(button => button.addEventListener('click', () => filterModules(Number(button.dataset.day))));
-search.addEventListener('input', () => filterModules(Number(filters.find(button => button.getAttribute('aria-pressed') === 'true').dataset.day)));
+moduleGrid.addEventListener('click', event => {
+  const tab = event.target.closest('[role="tab"]');
+  if (tab) showStage(tab);
+});
+
+moduleGrid.addEventListener('keydown', event => {
+  const tab = event.target.closest('[role="tab"]');
+  if (!tab) return;
+  const tabs = [...tab.parentElement.querySelectorAll('[role="tab"]')];
+  const current = tabs.indexOf(tab);
+  const next = {
+    ArrowLeft: (current - 1 + tabs.length) % tabs.length,
+    ArrowRight: (current + 1) % tabs.length,
+    Home: 0,
+    End: tabs.length - 1
+  }[event.key];
+  if (next === undefined) return;
+  event.preventDefault();
+  showStage(tabs[next]);
+  tabs[next].focus();
+});
+
+function filterModules() {
+  const query = search.value.trim().toLocaleLowerCase('id');
+  let count = 0;
+  for (const module of modules) {
+    const detail = document.getElementById('blok-' + module.id);
+    const visible = detail.textContent.toLocaleLowerCase('id').includes(query);
+    detail.hidden = !visible;
+    if (visible) count += 1;
+  }
+  document.querySelector('#module-count').textContent = count ? `${count} blok materi` : 'Tidak ada blok yang cocok. Coba kata kunci lain.';
+}
+search.addEventListener('input', filterModules);
 
 function openHashModule() {
   const datasetLink = location.hash === '#dataset';
-  const target = modules.find(module => datasetLink ? module.id === 'data' : location.hash === '#blok-' + module.id);
+  const target = modules.find(module => datasetLink ? module.dataset : location.hash === '#blok-' + module.id);
   if (!target) return;
   search.value = '';
-  filterModules(0);
+  filterModules();
   const detail = document.getElementById('blok-' + target.id);
   detail.open = true;
+  if (datasetLink) showStage(document.getElementById(target.id + '-tab-2'));
   const focus = datasetLink ? caseSelect : detail.querySelector('summary');
   focus.focus({ preventScroll: true });
   (datasetLink ? document.querySelector('#dataset') : detail).scrollIntoView();
@@ -120,8 +144,10 @@ function openHashModule() {
 window.addEventListener('hashchange', openHashModule);
 document.addEventListener('click', event => {
   const link = event.target.closest('a');
-  if (link?.hash && link.hash === location.hash) openHashModule();
+  if (!link || link.hasAttribute('download') || !link.getAttribute('href')?.startsWith('#')) return;
+  if (link.hash === location.hash) openHashModule();
 });
+
 
 function closeMenu() {
   menu.setAttribute('aria-expanded', 'false');
@@ -198,7 +224,6 @@ document.addEventListener('click', async event => {
   }
 });
 
-showAgenda(1);
-filterModules(0);
+filterModules();
 showProgress();
 openHashModule();
