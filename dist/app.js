@@ -18,14 +18,28 @@ agendaPanel.innerHTML = agenda.map(([title, sessions]) => `
     </ol>
   </div>`).join('');
 
-function materials(module) {
+function materials(module, forExample = false) {
   if (module.dataset) {
+    if (forExample) return '<a class="button secondary copy-button" href="dataset/latihan-layanan.csv" download>Unduh CSV Umpan balik layanan ↓</a>';
     return `
       <label for="dataset-case">Pilih kasus</label>
       <select id="dataset-case">${datasetCases.map(([id, title]) => `<option value="${id}">${title}</option>`).join('')}</select>
       <a id="dataset-download" class="button secondary copy-button" href="dataset/latihan-${datasetCases[0][0]}.csv" download>Unduh CSV ↓</a>`;
   }
   return module.files.map(([file, label]) => `<a class="button secondary copy-button" href="bahan/${file}" download>Unduh ${label} ↓</a>`).join('');
+}
+
+function textBox(id, title, copyLabel, filename) {
+  return `<div class="text-box">
+    <div class="text-box-header">
+      <h4>${title}</h4>
+      <div class="text-box-actions">
+        <button class="copy-button" type="button" data-copy="${id}">${copyLabel}</button>
+        ${filename ? `<a class="copy-button" data-prompt-file="${id}" download="${filename}">Unduh prompt TXT ↓</a>` : ''}
+      </div>
+    </div>
+    <pre id="${id}"></pre>
+  </div>`;
 }
 
 const stageNames = ['Kenali', 'Lihat Contoh', 'Coba Sendiri', 'Cek Pemahaman'];
@@ -36,15 +50,21 @@ moduleGrid.innerHTML = modules.map((module, index) => {
   const stages = [
     `<dl class="concepts">${module.concepts.map(([term, definition]) => `<div><dt>${term}</dt><dd>${definition}</dd></div>`).join('')}</dl>
      ${id === 'orientasi' ? '<p>Model bisa keliru. Cocokkan fakta dan angka dengan sumber. <a href="https://openai.com/index/introducing-gpt-5/" target="_blank" rel="noopener">Rujukan model GPT ↗</a></p>' : ''}`,
-    `<h3>Contoh dan hasil yang diharapkan</h3><p>${module.example}</p>`,
+    `<h3>Contoh dan hasil yang diharapkan</h3>
+      <p>${module.example.note}</p>
+      <div class="practice-actions">${materials(module, true)}</div>
+      ${module.example.starter ? textBox('example-starter-' + id, 'Prompt awal', 'Salin prompt') : ''}
+      ${hasPrompt ? textBox('example-prompt-' + id, 'Prompt contoh', 'Salin prompt', 'prompt-' + id + '.txt') : ''}
+      ${module.example.input ? textBox('example-input-' + id, 'Cuplikan bahan', 'Salin bahan') : ''}
+      <h4 class="example-output-title">Contoh hasil</h4>
+      <pre class="example-output" id="example-output-${id}"></pre>`,
     `<div class="practice" ${module.dataset ? 'id="dataset"' : ''}>
       <h3>${module.dataset ? 'Dataset dan prompt audit' : 'Langkah praktik'}</h3>
+      <ol class="practice-steps">${module.steps.map(step => `<li>${step}</li>`).join('')}</ol>
       <div class="practice-actions">
         ${materials(module)}
-        ${hasPrompt ? `<button class="button primary copy-button" type="button" data-copy="${promptId}">Salin ${module.dataset ? 'prompt audit' : 'prompt'}</button><a class="button secondary copy-button" data-prompt-file="${promptId}" download="prompt-${id}.txt">Unduh prompt TXT ↓</a>` : ''}
       </div>
-      <ol class="practice-steps">${module.steps.map(step => `<li>${step}</li>`).join('')}</ol>
-      ${hasPrompt ? `<h4>Prompt siap pakai</h4><pre id="${promptId}"></pre>` : ''}
+      ${hasPrompt ? textBox(promptId, 'Prompt siap pakai', module.dataset ? 'Salin prompt audit' : 'Salin prompt', 'prompt-' + id + '.txt') : ''}
       <p><strong>Jika AI belum bisa diakses.</strong> ${module.offline}</p>
       <p><strong>Bukti yang disimpan.</strong> ${module.output}</p>
     </div>`,
@@ -64,9 +84,15 @@ moduleGrid.innerHTML = modules.map((module, index) => {
 }).join('');
 
 for (const module of modules) {
+  const id = module.id;
   if (module.prompt || module.dataset) {
-    document.getElementById('prompt-' + module.id).textContent = module.dataset ? datasetPrompt : module.prompt;
+    const prompt = module.dataset ? datasetPrompt : module.prompt;
+    document.getElementById('prompt-' + id).textContent = prompt;
+    document.getElementById('example-prompt-' + id).textContent = prompt;
   }
+  if (module.example.starter) document.getElementById('example-starter-' + id).textContent = module.example.starter;
+  if (module.example.input) document.getElementById('example-input-' + id).textContent = module.example.input;
+  document.getElementById('example-output-' + id).textContent = module.example.output;
 }
 document.querySelector('#master-prompt').textContent = masterPrompt;
 document.querySelectorAll('[data-prompt-file]').forEach(link => {
