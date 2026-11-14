@@ -5,6 +5,7 @@ const menu = document.querySelector('.menu');
 const nav = document.querySelector('#nav-links');
 const announcement = document.querySelector('#announcement');
 const storageKey = 'pbk-ai-praktis-kesiapan-v1';
+const openGemini = `<a class="button secondary copy-button" href="${geminiUrl}" target="_blank" rel="noopener">Buka Gemini <span aria-hidden="true">↗</span></a>`;
 
 function downloadMaterial(file, label) {
   return `<a class="button secondary copy-button" href="bahan/${file}" download>Unduh ${label} ↓</a>`;
@@ -59,8 +60,9 @@ const datasetKit = `<div class="dataset-kit">
 
 const extractionPractice = (id, heading) => `<div class="dataset-task">
   <h4>${heading}</h4>
-  <p>Unggah formulir PDF dan jalankan prompt. Cocokkan tanggal, kategori, skor, dan status AK-001 dengan baris pertama di tab Data mentah file Excel. Catat rujukan BUK-AK-01 di tab Log audit pada buku kerja.</p>
+  <p>Unggah formulir PDF di Gemini dan jalankan prompt. Cocokkan tanggal, kategori, skor, dan status AK-001 dengan baris pertama di tab Data mentah file Excel. Catat rujukan BUK-AK-01 di tab Log audit pada buku kerja.</p>
   <div class="practice-actions">
+    ${openGemini}
     ${downloadMaterial('formulir-umpan-balik.pdf', 'formulir PDF')}
     <a class="button secondary copy-button" href="dataset/latihan-akademik.xlsx" download>Unduh dataset literasi media (XLSX) ↓</a>
   </div>
@@ -70,8 +72,9 @@ const extractionPractice = (id, heading) => `<div class="dataset-task">
 
 const sopPractice = (id, isPractice = false) => `<div class="dataset-task"${isPractice ? ' id="uji-sop"' : ''}>
   <h4>Uji perubahan SOP tindak lanjut</h4>
-  <p>Unggah satu berkas untuk tiap versi SOP, lalu jalankan prompt. Cocokkan tanggal berlaku dengan Pasal 1 dan batas tindak lanjut dengan Pasal 2. Simpan hasil aktual dan rujukan di sheet Perawatan.</p>
+  <p>Unggah dua versi SOP di Gemini, lalu jalankan prompt. Cocokkan tanggal berlaku dengan Pasal 1 dan batas tindak lanjut dengan Pasal 2. Simpan hasil aktual dan rujukan di sheet Perawatan.</p>
   <div class="practice-actions">
+    ${openGemini}
     ${downloadMaterial('sop-tindak-lanjut-v1.pdf', 'SOP v1 PDF')}
     ${downloadMaterial('sop-tindak-lanjut-v2.pdf', 'SOP v2 PDF')}
   </div>
@@ -86,10 +89,10 @@ moduleGrid.innerHTML = modules.map((module, index) => {
   const hasPrompt = module.prompt || module.dataset;
   const stages = [
     `<dl class="concepts">${module.concepts.map(([term, definition]) => `<div><dt>${term}</dt><dd>${definition}</dd></div>`).join('')}</dl>
-     ${id === 'orientasi' ? '<p>Model bisa keliru. Cocokkan fakta dan angka dengan sumber. <a href="https://openai.com/index/introducing-gpt-5/" target="_blank" rel="noopener">Rujukan model GPT ↗</a></p>' : ''}`,
+     ${id === 'orientasi' ? `<p>Cocokkan jawaban model dengan sumber. Pilihan model dan batas pemakaian bergantung pada akun. Jika mencapai batas, lanjutkan pemeriksaan manual dengan file latihan.</p><div class="practice-actions">${openGemini}<a class="button secondary copy-button" href="${geminiModelsHelp}" target="_blank" rel="noopener">Panduan model Gemini ↗</a><a class="button secondary copy-button" href="${geminiLimitsHelp}" target="_blank" rel="noopener">Batas pemakaian ↗</a></div>` : ''}`,
     `<h3>Contoh dan hasil yang diharapkan</h3>
       <p>${module.example.note}</p>
-      <div class="practice-actions">${materials(module, true)}</div>
+      <div class="practice-actions">${openGemini}${materials(module, true)}</div>
       ${module.example.starter ? textBox('example-starter-' + id, 'Prompt awal', 'Salin prompt') : ''}
       ${hasPrompt ? textBox('example-prompt-' + id, 'Prompt contoh', 'Salin prompt') : ''}
       ${module.example.input ? textBox('example-input-' + id, 'Cuplikan bahan', 'Salin bahan') : ''}
@@ -101,6 +104,7 @@ moduleGrid.innerHTML = modules.map((module, index) => {
       ${module.dataset ? `${datasetKit}${extractionPractice('prompt-ekstraksi', '1. Cocokkan formulir dengan Excel')}<h4 class="dataset-task-title">2. Audit data dan simpan hasil</h4>` : '<h3>Langkah praktik</h3>'}
       <ol class="practice-steps">${module.steps.map(step => `<li>${step}</li>`).join('')}</ol>
       <div class="practice-actions">
+        ${openGemini}
         ${materials(module)}
         ${module.dataset || ['verifikasi', 'pemasangan', 'uji', 'perawatan', 'demonstrasi'].includes(id) ? downloadMaterial('buku-kerja-pbk-fdk.xlsx', 'buku kerja Excel') : ''}
       </div>

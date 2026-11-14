@@ -13,7 +13,9 @@ const modules = [
     concepts: [
       ['Kecerdasan buatan', 'AI membantu komputer mengerjakan tugas seperti mengelompokkan pesan, mengenali pola, dan memahami bahasa.'],
       ['AI generatif', 'AI generatif menghasilkan keluaran dari instruksi, seperti ringkasan, draf laporan, atau gambar.'],
-      ['Model dan aplikasi', 'Model mengolah masukan berdasarkan pola yang dipelajari saat pelatihan. GPT adalah contoh keluarga model bahasa. ChatGPT adalah contoh aplikasi tempat Anda memberi instruksi.']
+      ['Model dan aplikasi', 'Aplikasi Gemini adalah tempat Anda memasukkan prompt dan bahan. Model seperti Flash-Lite memproses masukan dan menyusun respons.'],
+      ['Auto dan Flash-Lite', 'Mulai dari Auto atau Flash-Lite pada akun pribadi tanpa paket berbayar. Auto memilih model untuk tiap prompt. Gunakan Flash-Lite untuk ringkasan catatan singkat.'],
+      ['Hydrogen dan Pro', 'Gemini 4 Hydrogen bisa dipakai untuk audit data bertahap. Gemini Pro cocok untuk analisis yang lebih rumit, seperti membandingkan aturan dalam dua dokumen. Gunakan pilihan yang tersedia di akun Anda.']
     ],
     example: {
       note: 'Instruksi “Tolong bantu catatan ini” masih terbuka untuk banyak jenis jawaban. Prompt di bawah menetapkan tugas, sumber, jumlah poin, dan cara menandai informasi yang belum ada.',
@@ -22,14 +24,14 @@ const modules = [
     },
     files: [['catatan-orientasi.pdf', 'Tiga catatan simulasi']],
     steps: [
-      'Buka satu percakapan baru di ChatGPT jika diizinkan, atau di platform AI yang ditetapkan.',
-      'Unduh Tiga catatan simulasi, unggah berkasnya, lalu tempel prompt di bawah. Mulai dari Kasus A.',
+      'Buka Gemini, masuk dengan akun Google, lalu buat percakapan baru. Gunakan Auto atau Flash-Lite sesuai pilihan yang tersedia.',
+      'Unduh Tiga catatan simulasi. Di Gemini, pilih Tambahkan file (+), unggah PDF, lalu tempel prompt di bawah. Mulai dari Kasus A.',
       'Cocokkan tiga unsur dengan sumber: angka, peristiwa, dan informasi yang belum tersedia.',
       'Ulangi untuk Kasus B dan C. Catat satu jawaban tepat dan satu bagian yang perlu diperbaiki atau diperjelas.',
       'Isi bagian 01 lembar kerja dengan satu tugas berulang dari pengajaran, penelitian, pengabdian, atau komunikasi publik. Catat pengguna, keluaran, ukuran berhasil, dan risiko.'
     ],
     prompt: `Saya sedang berlatih merangkum catatan akademik untuk tim pengajar. Baca catatan-orientasi.pdf dan ringkas Kasus A dalam dua poin. Poin pertama memuat kejadian dan angka. Poin kedua memuat informasi yang masih belum diketahui dengan label BUKTI TIDAK CUKUP. Pertahankan angka sesuai sumber. ${sourcesOnly}`,
-    check: ['Apa beda model dan aplikasi?', 'GPT adalah keluarga model bahasa yang mengolah masukan. ChatGPT adalah aplikasi untuk berinteraksi dengan model.'],
+    check: ['Apa beda aplikasi Gemini, Flash-Lite, dan Auto?', 'Gemini adalah aplikasi untuk memasukkan instruksi. Flash-Lite adalah model yang menyusun respons. Auto memilih model untuk tiap prompt.'],
     offline: 'Ringkas ketiga kasus secara manual, lalu bandingkan dengan contoh dan tandai sumber setiap angka.'
   },
   {
@@ -48,7 +50,7 @@ const modules = [
     dataset: true,
     steps: [
       'Pilih kasus dan unduh dataset XLSX. Buka tab Data mentah. Catat sumber, jumlah baris, dan kolom. Jika memakai data klien, ikuti panduan pada bagian di bawah.',
-      'Unggah file dataset XLSX ke platform AI yang disetujui. Salin prompt audit, jalankan, lalu simpan tabel temuan.',
+      'Salin prompt audit ke Gemini. Unggah file XLSX jika tersedia. Jika unggahan XLSX tidak tersedia, salin rentang A4:H29 dari tab Data mentah beserta header, lalu tempel di bawah prompt. Jalankan dan simpan tabel temuan.',
       'Periksa temuan langsung pada salinan sumber. Untuk Excel sintetis, cek ID ganda, skor kosong atau di luar rentang, format tanggal, dan kategori. Untuk data klien, ikuti aturan dari kamus kolom.',
       'Pisahkan koreksi pasti dari nilai yang perlu dikonfirmasi. Untuk kasus literasi media, isi Hasil peserta dan Log audit. Untuk kasus lain, simpan file bersih terpisah dan catat jejaknya di Log audit.',
       'Bandingkan jumlah baris dan ID unik sebelum serta sesudah koreksi. Jelaskan selisihnya.'
@@ -111,7 +113,7 @@ const modules = [
     output: 'Catatan konfigurasi v1 dan bukti uji fungsi dasar.',
     unit: 'J.62AIN00.015.1',
     concepts: [
-      ['Pemasangan latihan', 'Siapkan prototipe briefing di satu percakapan latihan. Catat platform, versi konfigurasi, sumber, dan siapa yang boleh mengakses.'],
+      ['Pemasangan latihan', 'Siapkan prototipe briefing di satu percakapan baru di Gemini. Catat model atau mode, versi konfigurasi, sumber, dan siapa yang boleh mengakses.'],
       ['Uji fungsi dasar', 'Jalankan satu permintaan normal untuk mengecek apakah alur memberikan keluaran dengan format dan rujukan yang benar.']
     ],
     example: {
@@ -120,9 +122,9 @@ const modules = [
     },
     files: [prototypeConfig, sourceBriefing],
     steps: [
-      'Buat percakapan baru dan unggah Konfigurasi prototipe v1 serta Sumber briefing.',
+      'Buat percakapan baru di Gemini lalu unggah Konfigurasi prototipe v1 dan Sumber briefing.',
       'Tempel prompt pemasangan. Periksa apakah keluaran memakai format yang ditetapkan di konfigurasi.',
-      'Cocokkan hasil dengan sumber dan simpan dalam bagian 05. Catat platform, versi, hasil aktual, dan status.',
+      'Cocokkan hasil dengan sumber dan simpan dalam bagian 05. Catat model atau mode, versi, hasil aktual, dan status.',
       'Jika keluaran awal gagal, periksa lampiran dan konfigurasi. Jalankan ulang, lalu catat perbedaannya.'
     ],
     prompt: 'Dalam simulasi ini gunakan aturan pada konfigurasi-prototipe.pdf sebagai konfigurasi kerja. Gunakan sumber-briefing.pdf sebagai bahan data. Tampilkan ringkasan dari cuplikan latihan: jumlah catatan, jumlah yang berstatus Selesai, dan apa yang belum diketahui. Cantumkan rujukan. Jika salah satu file belum terbaca, minta saya mengunggah ulang.',
