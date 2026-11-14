@@ -20,7 +20,7 @@ agendaPanel.innerHTML = agenda.map(([title, sessions]) => `
 
 function materials(module, forExample = false) {
   if (module.dataset) {
-    if (forExample) return '<a class="button secondary copy-button" href="dataset/latihan-layanan.csv" download>Unduh CSV Umpan balik layanan ↓</a>';
+    if (forExample) return '<a class="button secondary copy-button" href="dataset/latihan-akademik.csv" download>Unduh CSV Dakwah dan komunikasi ↓</a>';
     return `
       <label for="dataset-case">Pilih kasus</label>
       <select id="dataset-case">${datasetCases.map(([id, title]) => `<option value="${id}">${title}</option>`).join('')}</select>
@@ -65,6 +65,20 @@ moduleGrid.innerHTML = modules.map((module, index) => {
         ${materials(module)}
       </div>
       ${hasPrompt ? textBox(promptId, 'Prompt siap pakai', module.dataset ? 'Salin prompt audit' : 'Salin prompt', 'prompt-' + id + '.txt') : ''}
+      ${module.dataset ? `
+        <details class="client-practice" id="data-klien">
+          <summary>Praktik dengan data klien jika disetujui</summary>
+          <div class="guidance-body">
+            <ol class="practice-steps">
+              <li>Pastikan klien menyetujui penggunaan data untuk PBK. Konfirmasi kolom, hak akses, dan platform dengan instruktur.</li>
+              <li>Buat salinan dengan kolom seperlunya. Hapus nama, NIM, kontak, dan informasi sensitif, termasuk yang tertulis di catatan. Gunakan kode latihan.</li>
+              <li>Isi kamus pemetaan sesuai nama kolom dan aturan data Anda. Unggah salinan serta kamus melalui platform yang disetujui. Gunakan prompt di bawah.</li>
+              <li>Periksa temuan secara manual dan simpan bukti sesuai kesepakatan. Gunakan CSV sintetis jika izin atau platform belum tersedia.</li>
+            </ol>
+            <a class="button secondary copy-button" href="bahan/kamus-pemetaan-kolom.txt" download>Unduh kamus pemetaan kolom ↓</a>
+            ${textBox('prompt-data-klien', 'Prompt audit data klien', 'Salin prompt', 'prompt-audit-data-klien.txt')}
+          </div>
+        </details>` : ''}
       <p><strong>Jika AI belum bisa diakses.</strong> ${module.offline}</p>
       <p><strong>Bukti yang disimpan.</strong> ${module.output}</p>
     </div>`,
@@ -95,6 +109,7 @@ for (const module of modules) {
   document.getElementById('example-output-' + id).textContent = module.example.output;
 }
 document.querySelector('#master-prompt').textContent = masterPrompt;
+document.querySelector('#prompt-data-klien').textContent = clientDataPrompt;
 document.querySelectorAll('[data-prompt-file]').forEach(link => {
   const content = document.getElementById(link.dataset.promptFile).textContent;
   link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content + '\n');
@@ -155,7 +170,8 @@ function filterModules() {
 search.addEventListener('input', filterModules);
 
 function openHashModule() {
-  const datasetLink = location.hash === '#dataset';
+  const clientLink = location.hash === '#data-klien';
+  const datasetLink = clientLink || location.hash === '#dataset';
   const target = modules.find(module => datasetLink ? module.dataset : location.hash === '#blok-' + module.id);
   if (!target) return;
   search.value = '';
@@ -163,9 +179,11 @@ function openHashModule() {
   const detail = document.getElementById('blok-' + target.id);
   detail.open = true;
   if (datasetLink) showStage(document.getElementById(target.id + '-tab-2'));
-  const focus = datasetLink ? caseSelect : detail.querySelector('summary');
+  const clientSection = document.querySelector('#data-klien');
+  if (clientLink) clientSection.open = true;
+  const focus = clientLink ? clientSection.querySelector('summary') : datasetLink ? caseSelect : detail.querySelector('summary');
   focus.focus({ preventScroll: true });
-  (datasetLink ? document.querySelector('#dataset') : detail).scrollIntoView();
+  (clientLink ? clientSection : datasetLink ? document.querySelector('#dataset') : detail).scrollIntoView();
 }
 window.addEventListener('hashchange', openHashModule);
 document.addEventListener('click', event => {

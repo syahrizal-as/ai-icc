@@ -1,0 +1,14 @@
+KAMUS PEMETAAN KOLOM UNTUK PRAKTIK PBK
+Isi dengan nama kolom dan aturan yang disepakati. Pakai kode latihan untuk menelusuri baris.
+
+Nama file latihan:
+Tujuan audit:
+Kolom ID latihan dan aturan keunikan:
+
+Nama kolom | Jenis nilai | Wajib terisi | Format, kategori, atau rentang | Tindakan bila nilai tidak sesuai
+[isi] | [isi] | [isi] | [isi] | [isi]
+
+Contoh aturan jika sesuai dengan data Anda:
+skor | bilangan bulat | ya | 1 sampai 5 | tandai untuk ditinjau
+
+Catat status izin dan akses bersama instruktur di luar berkas yang akan diunggah.

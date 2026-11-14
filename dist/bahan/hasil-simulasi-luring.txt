@@ -1,8 +1,8 @@
 HASIL CONTOH UNTUK LATIHAN LURING
 Semua hasil di bawah dibuat untuk bahan pembahasan. Tandai eksekusi aktual sebagai BELUM DIUJI.
 
-T01 — benar: "Terdapat 4 catatan, 3 berstatus Selesai (RUJ-LY-01)."
-T03 — keliru: "Skor Akses LY-003 adalah 4."
-T06 — informasi belum tersedia: "Penyebab skor rendah LY-001: BUKTI TIDAK CUKUP."
+T01 — benar: "Terdapat 4 catatan, 3 berstatus Selesai (RUJ-AK-01)."
+T03 — keliru: "Skor Media AK-003 adalah 4."
+T06 — informasi belum tersedia: "Penyebab skor rendah AK-001: BUKTI TIDAK CUKUP."
 
 Bandingkan setiap hasil dengan sumber-briefing.txt dan skenario-uji.txt. Catat status hasil contoh, rujukan, dan tindakan yang disarankan.

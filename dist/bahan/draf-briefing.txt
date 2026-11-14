@@ -3,7 +3,7 @@ Gunakan sumber-briefing.txt sebagai satu-satunya rujukan untuk audit.
 
 1. Ada empat catatan yang ditinjau.
 2. Tiga catatan berstatus Selesai.
-3. Skor Akses pada LY-003 adalah 4 dari 5.
-4. Keterlambatan petugas adalah penyebab skor rendah pada LY-001.
+3. Skor Media pada AK-003 adalah 4 dari 5.
+4. Keterlambatan pembagian materi adalah penyebab skor rendah pada AK-001.
 5. Rata-rata skor empat catatan adalah 3,25 dari 5.
-6. Semua catatan Layanan berstatus Selesai.
+6. Semua catatan Materi berstatus Selesai.
