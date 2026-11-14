@@ -17,10 +17,9 @@ function showAgenda(day) {
   });
   agendaPanel.setAttribute('aria-labelledby', tabs[day - 1].id);
   agendaPanel.innerHTML = `
-    <div class="day-heading"><h3>${details.title}</h3><span>${details.total}</span></div>
+    <div class="day-heading"><h3>${details.title}</h3></div>
     <ol class="agenda-list">${sessions.map(session => `
       <li class="agenda-item">
-        <span class="duration">${session.minutes} menit</span>
         <div><strong>${session.title}</strong><p>${session.output}</p></div>
         ${session.id ? `<a href="#blok-${session.id}">Buka materi ↗</a>` : ''}
       </li>`).join('')}
@@ -38,14 +37,28 @@ tabs.forEach((tab, index) => {
   });
 });
 
+const datasetActions = `
+  <div class="prompt" id="dataset">
+    <h3>Dataset dan prompt audit</h3>
+    <p>Pilih satu kasus, unduh CSV, lalu unggah ke platform AI yang disetujui. Setiap file berisi 25 baris data sintetis untuk latihan validasi.</p>
+    <label for="dataset-case">Pilih kasus</label>
+    <div class="dataset-actions">
+      <select id="dataset-case">${datasetCases.map(([id, title]) => `<option value="${id}">${title}</option>`).join('')}</select>
+      <a id="dataset-download" class="button secondary copy-button" href="dataset/latihan-${datasetCases[0][0]}.csv" download>Unduh CSV <span aria-hidden="true">↓</span></a>
+      <button class="button primary copy-button" type="button" data-copy="dataset-prompt">Salin prompt audit</button>
+    </div>
+    <pre id="dataset-prompt"></pre>
+  </div>`;
+
 moduleGrid.innerHTML = modules.map((module, index) => `
   <details id="blok-${module.id}">
-    <summary><span class="module-index">${String(index + 1).padStart(2, '0')}</span><span>${module.title}<span class="module-meta">Hari ${module.day} · ${module.minutes} menit</span></span></summary>
+    <summary><span class="module-index">${String(index + 1).padStart(2, '0')}</span><span>${module.title}<span class="module-meta">Hari ${module.day}</span></span></summary>
     <div class="module-body">
       <div class="module-columns">
         <div><h3>Langkah praktik</h3><ol>${module.steps.map(step => `<li>${step}</li>`).join('')}</ol></div>
         <div><h3>Bukti kerja</h3><p>${module.output}</p><p><strong>Pemetaan</strong> · ${module.unit}</p></div>
       </div>
+      ${module.id === 'data' ? datasetActions : ''}
       ${module.prompt ? `<div class="prompt"><h3>Contoh prompt</h3><pre id="prompt-${module.id}"></pre><button class="button secondary copy-button" type="button" data-copy="prompt-${module.id}">Salin prompt</button></div>` : ''}
     </div>
   </details>`).join('');
@@ -55,14 +68,15 @@ modules.filter(module => module.prompt).forEach(module => {
 });
 document.querySelector('#master-prompt').textContent = masterPrompt;
 document.querySelector('#dataset-prompt').textContent = datasetPrompt;
-document.querySelector('#dataset-cases').innerHTML = datasetCases.map(([id, title, summary]) => `
-  <article class="dataset-card">
-    <h3>${title}</h3><p>${summary}</p>
-    <a class="button secondary copy-button" href="dataset/latihan-${id}.csv" aria-label="Unduh CSV ${title}" download>Unduh CSV <span aria-hidden="true">↓</span></a>
-  </article>`).join('');
-
-const dataPractice = document.querySelector('#blok-data .module-body');
-dataPractice.insertAdjacentHTML('beforeend', '<a class="text-link" href="#dataset">Unduh dataset dan salin prompt audit ↗</a>');
+const caseSelect = document.querySelector('#dataset-case');
+const datasetDownload = document.querySelector('#dataset-download');
+function updateDatasetDownload() {
+  datasetDownload.href = `dataset/latihan-${caseSelect.value}.csv`;
+  datasetDownload.setAttribute('aria-label', 'Unduh CSV ' + caseSelect.selectedOptions[0].textContent);
+}
+caseSelect.addEventListener('change', updateDatasetDownload);
+window.addEventListener('pageshow', updateDatasetDownload);
+updateDatasetDownload();
 
 function filterModules(day) {
   const query = search.value.trim().toLocaleLowerCase('id');
@@ -81,19 +95,21 @@ filters.forEach(button => button.addEventListener('click', () => filterModules(N
 search.addEventListener('input', () => filterModules(Number(filters.find(button => button.getAttribute('aria-pressed') === 'true').dataset.day)));
 
 function openHashModule() {
-  const target = modules.find(module => location.hash === '#blok-' + module.id);
+  const datasetLink = location.hash === '#dataset';
+  const target = modules.find(module => datasetLink ? module.id === 'data' : location.hash === '#blok-' + module.id);
   if (!target) return;
   search.value = '';
   filterModules(0);
   const detail = document.getElementById('blok-' + target.id);
   detail.open = true;
-  detail.querySelector('summary').focus({ preventScroll: true });
-  detail.scrollIntoView();
+  const focus = datasetLink ? caseSelect : detail.querySelector('summary');
+  focus.focus({ preventScroll: true });
+  (datasetLink ? document.querySelector('#dataset') : detail).scrollIntoView();
 }
 window.addEventListener('hashchange', openHashModule);
-agendaPanel.addEventListener('click', event => {
+document.addEventListener('click', event => {
   const link = event.target.closest('a');
-  if (link?.hash === location.hash) openHashModule();
+  if (link?.hash && link.hash === location.hash) openHashModule();
 });
 
 function closeMenu() {
