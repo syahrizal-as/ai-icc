@@ -76,6 +76,11 @@ p { margin: 0 }
 .outcomes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
 .outcomes article, .unit-card { background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 20px }
 .outcomes p, .unit-card p { color: var(--muted); font-size: .92rem; margin-top: 9px }
+.facilitator { padding-bottom: clamp(54px, 7.4vw, 106px) }
+.facilitator-card { display: grid; grid-template-columns: .87fr 1.13fr; gap: clamp(24px, 5vw, 72px); padding: clamp(24px, 4vw, 52px); background: var(--white); border: 1px solid var(--line); border-left: 4px solid var(--blue); border-radius: 10px }
+.facilitator-role { margin-top: 11px; color: var(--blue); font-weight: 700 }
+.facilitator-detail p { margin-top: 7px; color: var(--muted) }
+.facilitator-detail h3:not(:first-child) { margin-top: 19px }
 .practice-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 12px 0 }
 .practice-actions label { font-size: .84rem; font-weight: 750 }
 .practice-actions select { min-height: 37px; max-width: 100%; color: var(--navy); background: var(--white); border: 1px solid #b7c8d0; border-radius: 7px; padding: 5px 10px; font-size: .86rem }
@@ -183,7 +188,7 @@ progress::-webkit-progress-value { background: var(--blue) }
   .hero-photo img { height: clamp(238px, 58vw, 365px) }
   .hero-description { margin-top: 16px }
   .actions { margin-top: 18px }
-  .program, .preparation { grid-template-columns: 1fr }
+  .program, .preparation, .facilitator-card { grid-template-columns: 1fr }
   .unit-grid { grid-template-columns: repeat(2,1fr) }
 }
 @media (max-width: 480px) {
