@@ -6,6 +6,9 @@ const nav = document.querySelector('#nav-links');
 const announcement = document.querySelector('#announcement');
 const storageKey = 'pbk-ai-praktis-kesiapan-v1';
 
+function downloadMaterial(file, label) {
+  return `<a class="button secondary copy-button" href="bahan/${file}" download>Unduh ${label} ↓</a>`;
+}
 
 agendaPanel.innerHTML = agenda.map(([title, sessions]) => `
   <div class="agenda-group">
@@ -20,13 +23,13 @@ agendaPanel.innerHTML = agenda.map(([title, sessions]) => `
 
 function materials(module, forExample = false) {
   if (module.dataset) {
-    if (forExample) return '<a class="button secondary copy-button" href="dataset/latihan-akademik.csv" download>Unduh CSV Dakwah dan komunikasi ↓</a>';
+    if (forExample) return `<a class="button secondary copy-button" href="dataset/latihan-akademik.csv" download>Unduh CSV literasi media ↓</a>${downloadMaterial('buku-kerja-pbk-fdk.xlsx', 'buku kerja Excel')}`;
     return `
       <label for="dataset-case">Pilih kasus</label>
       <select id="dataset-case">${datasetCases.map(([id, title]) => `<option value="${id}">${title}</option>`).join('')}</select>
       <a id="dataset-download" class="button secondary copy-button" href="dataset/latihan-${datasetCases[0][0]}.csv" download>Unduh CSV ↓</a>`;
   }
-  return module.files.map(([file, label]) => `<a class="button secondary copy-button" href="bahan/${file}" download>Unduh ${label} ↓</a>`).join('');
+  return module.files.map(([file, label]) => downloadMaterial(file, label)).join('');
 }
 
 function textBox(id, title, copyLabel, filename) {
@@ -41,6 +44,44 @@ function textBox(id, title, copyLabel, filename) {
     <pre id="${id}"></pre>
   </div>`;
 }
+
+const datasetKit = `<div class="dataset-kit">
+  <p class="eyebrow">BAHAN LATIHAN</p>
+  <h3>Paket dataset untuk dosen</h3>
+  <p>Gunakan kasus evaluasi kegiatan literasi media. Simpan satu salinan buku kerja untuk mencatat pemasukan data, audit, uji AI, dan perawatan.</p>
+  <div class="practice-actions">
+    <a class="button primary" href="dataset/paket-dataset-pbk-fdk.zip" download>Unduh paket lengkap ZIP ↓</a>
+    ${downloadMaterial('buku-kerja-pbk-fdk.xlsx', 'buku kerja Excel')}
+    ${downloadMaterial('panduan-dataset-fdk.pdf', 'panduan PDF')}
+    ${downloadMaterial('kalkulator-biaya-ai.xlsx', 'kalkulator biaya opsional')}
+  </div>
+  <a class="text-link" href="#data-klien">Panduan jika memakai data klien <span aria-hidden="true">↓</span></a>
+</div>`;
+
+const extractionPractice = `<div class="dataset-task">
+  <h4>1. Cocokkan formulir dengan CSV</h4>
+  <p>Unggah satu versi formulir. Jalankan prompt, cocokkan tanggal, kategori, skor, dan status AK-001 dengan baris pertama CSV literasi media. Catat rujukan BUK-AK-01 di sheet Log audit.</p>
+  <div class="practice-actions">
+    ${downloadMaterial('formulir-umpan-balik.pdf', 'formulir PDF')}
+    ${downloadMaterial('formulir-umpan-balik.txt', 'formulir TXT')}
+    <a class="button secondary copy-button" href="dataset/latihan-akademik.csv" download>Unduh CSV literasi media ↓</a>
+  </div>
+  ${textBox('prompt-ekstraksi', 'Prompt ekstraksi formulir', 'Salin prompt', 'prompt-ekstraksi-formulir.txt')}
+  <p class="dataset-result"><strong>Contoh hasil.</strong> AK-001 tercatat 2026-10-01 pada kategori Materi, berskor 1, dan berstatus Terbuka. Rujukan BUK-AK-01.</p>
+</div>`;
+
+const sopPractice = `<div class="dataset-task" id="uji-sop">
+  <h4>Uji perubahan SOP tindak lanjut</h4>
+  <p>Unggah satu berkas untuk tiap versi SOP, lalu jalankan prompt. Cocokkan tanggal berlaku dengan Pasal 1 dan batas tindak lanjut dengan Pasal 2. Simpan hasil aktual dan rujukan di sheet Perawatan.</p>
+  <div class="practice-actions">
+    ${downloadMaterial('sop-tindak-lanjut-v1.pdf', 'SOP v1 PDF')}
+    ${downloadMaterial('sop-tindak-lanjut-v2.pdf', 'SOP v2 PDF')}
+    ${downloadMaterial('sop-tindak-lanjut-v1.txt', 'SOP v1 TXT')}
+    ${downloadMaterial('sop-tindak-lanjut-v2.txt', 'SOP v2 TXT')}
+  </div>
+  ${textBox('prompt-sop', 'Prompt uji perubahan SOP', 'Salin prompt', 'prompt-uji-sop.txt')}
+  <p class="dataset-result"><strong>Contoh hasil.</strong> Catatan 28 Oktober mengikuti SOP v1 dengan batas 14 hari. Catatan 2 November mengikuti SOP v2 dengan batas 7 hari. Jika tanggal kosong, minta konfirmasi.</p>
+</div>`;
 
 const stageNames = ['Kenali', 'Lihat Contoh', 'Coba Sendiri', 'Cek Pemahaman'];
 moduleGrid.innerHTML = modules.map((module, index) => {
@@ -59,10 +100,11 @@ moduleGrid.innerHTML = modules.map((module, index) => {
       <h4 class="example-output-title">Contoh hasil</h4>
       <pre class="example-output" id="example-output-${id}"></pre>`,
     `<div class="practice" ${module.dataset ? 'id="dataset"' : ''}>
-      <h3>${module.dataset ? 'Dataset dan prompt audit' : 'Langkah praktik'}</h3>
+      ${module.dataset ? `${datasetKit}${extractionPractice}<h4 class="dataset-task-title">2. Audit data dan simpan hasil</h4>` : '<h3>Langkah praktik</h3>'}
       <ol class="practice-steps">${module.steps.map(step => `<li>${step}</li>`).join('')}</ol>
       <div class="practice-actions">
         ${materials(module)}
+        ${module.dataset || ['verifikasi', 'pemasangan', 'uji', 'perawatan', 'demonstrasi'].includes(id) ? downloadMaterial('buku-kerja-pbk-fdk.xlsx', 'buku kerja Excel') : ''}
       </div>
       ${hasPrompt ? textBox(promptId, 'Prompt siap pakai', module.dataset ? 'Salin prompt audit' : 'Salin prompt', 'prompt-' + id + '.txt') : ''}
       ${module.dataset ? `
@@ -72,13 +114,14 @@ moduleGrid.innerHTML = modules.map((module, index) => {
             <ol class="practice-steps">
               <li>Pastikan klien menyetujui penggunaan data untuk PBK. Konfirmasi kolom, hak akses, dan platform dengan instruktur.</li>
               <li>Buat salinan dengan kolom seperlunya. Hapus nama, NIM, kontak, dan informasi sensitif, termasuk yang tertulis di catatan. Gunakan kode latihan.</li>
-              <li>Isi kamus pemetaan sesuai nama kolom dan aturan data Anda. Unggah salinan serta kamus melalui platform yang disetujui. Gunakan prompt di bawah.</li>
-              <li>Periksa temuan secara manual dan simpan bukti sesuai kesepakatan. Gunakan CSV sintetis jika izin atau platform belum tersedia.</li>
+              <li>Isi kamus pemetaan sesuai kolom dan aturan data Anda. Gunakan salinan CSV atau XLSX yang sudah disamarkan. Unggah salinan dan kamus lewat platform yang disetujui, lalu jalankan prompt.</li>
+              <li>Periksa temuan secara manual. Catat kode baris, keputusan, dan rujukan pada Log audit di salinan buku kerja. Gunakan paket sintetis jika izin atau platform belum tersedia.</li>
             </ol>
             <a class="button secondary copy-button" href="bahan/kamus-pemetaan-kolom.txt" download>Unduh kamus pemetaan kolom ↓</a>
             ${textBox('prompt-data-klien', 'Prompt audit data klien', 'Salin prompt', 'prompt-audit-data-klien.txt')}
           </div>
         </details>` : ''}
+      ${id === 'perawatan' ? sopPractice : ''}
       <p><strong>Jika AI belum bisa diakses.</strong> ${module.offline}</p>
       <p><strong>Bukti yang disimpan.</strong> ${module.output}</p>
     </div>`,
@@ -110,6 +153,8 @@ for (const module of modules) {
 }
 document.querySelector('#master-prompt').textContent = masterPrompt;
 document.querySelector('#prompt-data-klien').textContent = clientDataPrompt;
+document.querySelector('#prompt-ekstraksi').textContent = extractionPrompt;
+document.querySelector('#prompt-sop').textContent = sopPrompt;
 document.querySelectorAll('[data-prompt-file]').forEach(link => {
   const content = document.getElementById(link.dataset.promptFile).textContent;
   link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content + '\n');
@@ -171,19 +216,20 @@ search.addEventListener('input', filterModules);
 
 function openHashModule() {
   const clientLink = location.hash === '#data-klien';
+  const sopLink = location.hash === '#uji-sop';
   const datasetLink = clientLink || location.hash === '#dataset';
-  const target = modules.find(module => datasetLink ? module.dataset : location.hash === '#blok-' + module.id);
+  const target = modules.find(module => datasetLink ? module.dataset : sopLink ? module.id === 'perawatan' : location.hash === '#blok-' + module.id);
   if (!target) return;
   search.value = '';
   filterModules();
   const detail = document.getElementById('blok-' + target.id);
   detail.open = true;
-  if (datasetLink) showStage(document.getElementById(target.id + '-tab-2'));
-  const clientSection = document.querySelector('#data-klien');
-  if (clientLink) clientSection.open = true;
-  const focus = clientLink ? clientSection.querySelector('summary') : datasetLink ? caseSelect : detail.querySelector('summary');
+  if (datasetLink || sopLink) showStage(document.getElementById(target.id + '-tab-2'));
+  const section = datasetLink || sopLink ? document.querySelector(location.hash) : detail;
+  if (clientLink) section.open = true;
+  const focus = datasetLink || sopLink ? section.querySelector('summary, a') : detail.querySelector('summary');
   focus.focus({ preventScroll: true });
-  (clientLink ? clientSection : datasetLink ? document.querySelector('#dataset') : detail).scrollIntoView();
+  section.scrollIntoView();
 }
 window.addEventListener('hashchange', openHashModule);
 document.addEventListener('click', event => {
