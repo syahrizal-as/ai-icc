@@ -6,18 +6,60 @@ const sourcesOnly = 'Gunakan hanya lampiran yang disebut. Jika lampiran belum te
 const skillHelp = 'https://support.google.com/gemini/answer/17094296?co=GENIE.Platform%3DDesktop&hl=id';
 const agentHelp = 'https://cloud.google.com/discover/what-are-ai-agents';
 
+const aiPlatforms = [
+  {
+    name: 'ChatGPT',
+    provider: 'OpenAI',
+    source: 'https://help.openai.com/en/articles/20001354-gpt-6-and-other-models-in-chatgpt',
+    access: 'Pilihan model di ChatGPT bergantung pada paket dan pengaturan organisasi. Pada akun Free dan Go, GPT-5.6 Luna menjalankan chat sehari-hari.',
+    models: [
+      ['GPT-5.6 Luna', 'Cepat untuk tugas teks sehari-hari.', 'Ringkas satu catatan kegiatan.'],
+      ['GPT-5.6 Sol', 'Penalaran untuk analisis bertahap dan pekerjaan teknis.', 'Jelaskan cara menghitung rata-rata dan mengecek hasilnya.'],
+      ['GPT-5.6 Sol Pro', 'Varian GPT-5.6 untuk analisis sulit dan pekerjaan yang lebih panjang.', 'Telusuri perbedaan angka di beberapa laporan.'],
+      ['GPT-6 Sol', 'Tingkat penalaran bisa diatur sesuai tugas.', 'Susun hasil audit data dan jelaskan alasan tiap koreksi.'],
+      ['GPT-6 Pro (Astra)', 'Pilihan untuk penalaran mendalam pada tugas sulit dengan banyak batasan.', 'Bandingkan beberapa dokumen kebijakan yang saling berkaitan.'],
+    ],
+  },
+  {
+    name: 'Claude',
+    provider: 'Anthropic',
+    source: 'https://platform.claude.com/docs/en/models/overview',
+    access: 'Daftar ini memperkenalkan keluarga model Claude. Pilihan pada claude.ai bergantung pada akun dan paket.',
+    models: [
+      ['Claude Haiku 5.5', 'Respons cepat untuk klasifikasi dan ekstraksi informasi berulang.', 'Kelompokkan pertanyaan peserta berdasarkan topik.'],
+      ['Claude Sonnet 5.5', 'Menyeimbangkan kecepatan dan kemampuan analisis.', 'Susun ringkasan dan poin tindak lanjut dari dokumen.'],
+      ['Claude Opus 5.5', 'Mendukung pekerjaan analitis yang panjang dan bertahap.', 'Gabungkan temuan dari beberapa laporan dengan rujukan.'],
+      ['Claude Fable 5.2', 'Penalaran mendalam untuk masalah kompleks dan alur kerja panjang.', 'Telusuri konflik bukti di beberapa dokumen yang saling merujuk.'],
+    ],
+  },
+  {
+    name: 'Gemini',
+    provider: 'Google',
+    source: 'https://support.google.com/googleone/answer/18648722?co=GENIE.Platform%3DDesktop&hl=en',
+    access: 'Untuk praktik kelas, gunakan Auto atau Flash-Lite sesuai akun. Auto membiarkan Gemini memilih model sesuai prompt. Pilihan lain bergantung pada paket dan lisensi.',
+    models: [
+      ['Gemini Flash-Lite', 'Respons cepat untuk pertanyaan sederhana dan tugas ringan.', 'Ringkas satu catatan literasi media.'],
+      ['Gemini 4 Hydrogen', 'Respons cepat sekaligus bisa menangani beberapa langkah.', 'Kelompokkan masukan, lalu hitung jumlah tiap kategori.'],
+      ['Gemini Pro', 'Penalaran lebih dalam untuk instruksi yang rumit.', 'Bandingkan aturan yang berbeda di dua SOP.'],
+      ['Gemini 4 Argon', 'Penalaran mendalam untuk alur kerja kompleks.', 'Periksa beberapa aturan validasi dalam satu audit.'],
+      ['Gemini 4 Carbon', 'Dirancang untuk masalah yang sangat sulit dan pekerjaan dengan banyak tahap.', 'Telusuri temuan yang saling bertentangan dari beberapa sumber.'],
+    ],
+  },
+];
+
 const lessonModules = [
   {
     id: 'orientasi',
     title: 'Pengantar AI dan pemilihan kasus',
-    output: 'Dasar AI, cara kerja AI agent, dan kriteria memilih kasus latihan.',
+    output: 'Dasar AI, perbandingan model ChatGPT, Claude, dan Gemini, serta cara memilih kasus.',
     unit: 'Persiapan untuk enam unit',
     concepts: [
-      ['Kecerdasan buatan', 'AI membantu komputer mengerjakan tugas seperti mengelompokkan pesan, mengenali pola, dan memahami bahasa.'],
-      ['AI generatif', 'AI generatif menghasilkan keluaran dari instruksi, seperti ringkasan, draf laporan, atau gambar.'],
-      ['Model dan aplikasi', 'Aplikasi Gemini adalah tempat Anda memasukkan prompt dan bahan. Model seperti Flash-Lite memproses masukan dan menyusun respons.'],
-      ['Auto dan Flash-Lite', 'Mulai dari Auto atau Flash-Lite pada akun pribadi tanpa paket berbayar. Auto memilih model untuk tiap prompt. Gunakan Flash-Lite untuk ringkasan catatan singkat.'],
-      ['Hydrogen dan Pro', 'Gemini 4 Hydrogen bisa dipakai untuk audit data bertahap. Gemini Pro cocok untuk analisis yang lebih rumit, seperti membandingkan aturan dalam dua dokumen. Gunakan pilihan yang tersedia di akun Anda.'],
+      ['Kecerdasan buatan (AI)', 'AI adalah teknologi yang membantu komputer melakukan tugas seperti mengenali pola, mengelompokkan pesan, dan memahami bahasa. Misalnya, pengelompokan umpan balik membantu tim menemukan topik yang paling sering muncul.'],
+      ['AI generatif', 'Bagian dari AI yang membuat keluaran baru, seperti ringkasan, draf laporan, gambar, atau kode. Hasilnya dipengaruhi oleh instruksi dan bahan rujukan yang Anda berikan.'],
+      ['Model bahasa besar (LLM)', 'LLM mempelajari pola bahasa dari banyak data untuk memahami instruksi dan menyusun respons. Jawabannya dapat terdengar meyakinkan meski angka atau rujukannya keliru. Periksa klaim penting pada sumber asli.'],
+      ['Aplikasi, model, dan mode', 'ChatGPT, Claude, dan Gemini adalah aplikasi tempat pengguna memberi instruksi. Model seperti GPT-6 Sol, Claude Sonnet 5.5, dan Gemini Flash-Lite memproses masukan. Mode seperti Auto di Gemini menentukan pilihan model secara otomatis.'],
+      ['Prompt dan bahan rujukan', 'Prompt menjelaskan tugas, sumber yang boleh dipakai, format hasil, dan batasan. Untuk audit, gunakan dokumen yang diizinkan dan minta rujukan per temuan agar jawaban dapat diperiksa.'],
+      ['Memilih model sesuai tugas', 'Model yang cepat cocok untuk tugas sederhana seperti mengambil judul atau meringkas satu catatan. Pakai model dengan penalaran lebih dalam untuk membandingkan aturan, memeriksa hitungan, atau menelusuri bukti yang bertentangan.'],
       ['AI agent', 'AI agent memakai model untuk mencapai tujuan melalui beberapa langkah. Agent dapat menentukan langkah berikutnya, memakai alat yang diizinkan, dan memeriksa hasil sebelum melanjutkan.'],
       ['AI agent untuk tindak lanjut akademik', 'Agent dapat membaca catatan kegiatan, menemukan pertanyaan yang belum terjawab, lalu menyusun usulan tindak lanjut. Jika sumber belum tersedia, agent meminta sumber. Dosen meninjau draf sebelum tindakan seperti mengirim pesan.'],
       ['Pemilihan kasus', 'Pilih tugas pengajaran, penelitian, pengabdian, atau komunikasi publik dengan hasil yang jelas, sumber yang boleh digunakan, dan hasil yang bisa diperiksa. Kelas memakai evaluasi kegiatan literasi media sebagai kasus bersama.']

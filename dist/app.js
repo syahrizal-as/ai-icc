@@ -83,13 +83,28 @@ const sopPractice = (id, isPractice = false) => `<div class="dataset-task"${isPr
 </div>`;
 
 const stageNames = ['Kenali', 'Lihat Contoh', 'Coba Sendiri', 'Cek Pemahaman'];
+const aiModelGuide = `<section class="model-guide" id="pilihan-model-ai" aria-labelledby="model-guide-title">
+  <h3 id="model-guide-title" tabindex="-1">ChatGPT, Claude, dan Gemini</h3>
+  <p>Bandingkan kelebihan model dan contoh tugasnya. Pilihan ini dapat berubah mengikuti paket dan pengaturan akun.</p>
+  <div class="model-grid">
+    ${aiPlatforms.map(({ name, provider, source, access, models }) => `
+      <article class="model-card">
+        <h4>${name} <span>· ${provider}</span></h4>
+        <dl>${models.map(([model, strength, task]) => `
+          <div><dt>${model}</dt><dd>${strength} <span>Contoh: ${task}</span></dd></div>`).join('')}</dl>
+        <p>${access}</p>
+        <a class="text-link" href="${source}" target="_blank" rel="noopener">Panduan model ${name} ↗</a>
+      </article>`).join('')}
+  </div>
+  <p>Rujukan model diperiksa 15 November 2026. <a class="text-link" href="${geminiLimitsHelp}" target="_blank" rel="noopener">Batas pemakaian Gemini ↗</a></p>
+</section>`;
 moduleGrid.innerHTML = modules.map((module, index) => {
   const id = module.id;
   const promptId = 'prompt-' + id;
   const hasPrompt = module.prompt || module.dataset;
   const stages = [
     () => `<dl class="concepts">${module.concepts.map(([term, definition]) => `<div><dt>${term}</dt><dd>${definition}</dd></div>`).join('')}</dl>
-     ${id === 'orientasi' ? `<p>Cocokkan jawaban model dengan sumber. Pilihan model dan batas pemakaian bergantung pada akun.</p><div class="practice-actions"><a class="button secondary copy-button" href="${geminiModelsHelp}" target="_blank" rel="noopener">Panduan model Gemini ↗</a><a class="button secondary copy-button" href="${geminiLimitsHelp}" target="_blank" rel="noopener">Batas pemakaian ↗</a><a class="button secondary copy-button" href="${agentHelp}" target="_blank" rel="noopener">Penjelasan AI agent ↗</a></div>` : ''}
+     ${id === 'orientasi' ? `<p><a class="text-link" href="${agentHelp}" target="_blank" rel="noopener">Penjelasan AI agent ↗</a></p>${aiModelGuide}` : ''}
      ${id === 'skill' ? `<a class="text-link" href="${skillHelp}" target="_blank" rel="noopener">Panduan resmi Keahlian Gemini ↗</a>` : ''}`,
     () => `<h3>Contoh dan hasil yang diharapkan</h3>
       <p>${module.example.note}</p>
@@ -226,7 +241,8 @@ function openHashModule() {
   const clientLink = location.hash === '#data-klien';
   const sopLink = location.hash === '#uji-sop';
   const datasetLink = clientLink || location.hash === '#dataset';
-  const moduleHash = location.hash === '#blok-agent' ? '#blok-orientasi' : location.hash;
+  const modelsLink = location.hash === '#pilihan-model-ai';
+  const moduleHash = modelsLink || location.hash === '#blok-agent' ? '#blok-orientasi' : location.hash;
   const target = modules.find(module => datasetLink ? module.dataset : sopLink ? module.id === 'perawatan' : moduleHash === '#blok-' + module.id);
   if (!target) return;
   search.value = '';
@@ -234,9 +250,11 @@ function openHashModule() {
   const detail = document.getElementById('blok-' + target.id);
   detail.open = true;
   if (datasetLink || sopLink) showStage(document.getElementById(target.id + '-tab-2'));
-  const section = datasetLink || sopLink ? document.querySelector(location.hash) : detail;
+  if (modelsLink) showStage(document.getElementById('orientasi-tab-0'));
+  const section = datasetLink || sopLink || modelsLink ? document.querySelector(location.hash) : detail;
   if (clientLink) section.open = true;
-  const focus = datasetLink || sopLink ? section.querySelector('summary, a') : detail.querySelector('summary');
+  const focus = modelsLink ? section.querySelector('h3')
+    : datasetLink || sopLink ? section.querySelector('summary, a') : detail.querySelector('summary');
   focus.focus({ preventScroll: true });
   section.scrollIntoView();
 }

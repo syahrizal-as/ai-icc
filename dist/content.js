@@ -30,7 +30,6 @@ const readiness = [
 ];
 
 const geminiUrl = 'https://gemini.google.com/';
-const geminiModelsHelp = 'https://support.google.com/gemini/answer/18648722?hl=id';
 const geminiLimitsHelp = 'https://support.google.com/gemini/answer/16275805?hl=id';
 
 const datasetCases = [
