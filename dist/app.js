@@ -83,32 +83,25 @@ const sopPractice = (id, isPractice = false) => `<div class="dataset-task"${isPr
 </div>`;
 
 const stageNames = ['Kenali', 'Lihat Contoh', 'Coba Sendiri', 'Cek Pemahaman'];
-const skillFields = prefix => textBox(prefix + '-skill-name', 'Nama keahlian', 'Salin nama')
-  + textBox(prefix + '-skill-description', 'Deskripsi keahlian', 'Salin deskripsi');
-const skillCases = prefix => skillRequests.map((_, i) =>
-  textBox(prefix + '-skill-request-' + i, 'Permintaan Kasus ' + (i === 0 ? 'A' : 'B'), 'Salin prompt')).join('');
 moduleGrid.innerHTML = modules.map((module, index) => {
   const id = module.id;
   const promptId = 'prompt-' + id;
   const hasPrompt = module.prompt || module.dataset;
   const stages = [
-    `<dl class="concepts">${module.concepts.map(([term, definition]) => `<div><dt>${term}</dt><dd>${definition}</dd></div>`).join('')}</dl>
-     ${id === 'orientasi' ? `<p>Cocokkan jawaban model dengan sumber. Pilihan model dan batas pemakaian bergantung pada akun. Jika mencapai batas, lanjutkan pemeriksaan manual dengan file latihan.</p><div class="practice-actions">${openGemini}<a class="button secondary copy-button" href="${geminiModelsHelp}" target="_blank" rel="noopener">Panduan model Gemini ↗</a><a class="button secondary copy-button" href="${geminiLimitsHelp}" target="_blank" rel="noopener">Batas pemakaian ↗</a></div>` : ''}
-     ${id === 'skill' ? `<a class="text-link" href="${skillHelp}" target="_blank" rel="noopener">Panduan resmi Keahlian Gemini ↗</a>` : ''}
-     ${id === 'agent' ? `<a class="text-link" href="${agentHelp}" target="_blank" rel="noopener">Penjelasan AI agent dari Google Cloud ↗</a>` : ''}`,
-    `<h3>Contoh dan hasil yang diharapkan</h3>
+    () => `<dl class="concepts">${module.concepts.map(([term, definition]) => `<div><dt>${term}</dt><dd>${definition}</dd></div>`).join('')}</dl>
+     ${id === 'orientasi' ? `<p>Cocokkan jawaban model dengan sumber. Pilihan model dan batas pemakaian bergantung pada akun.</p><div class="practice-actions"><a class="button secondary copy-button" href="${geminiModelsHelp}" target="_blank" rel="noopener">Panduan model Gemini ↗</a><a class="button secondary copy-button" href="${geminiLimitsHelp}" target="_blank" rel="noopener">Batas pemakaian ↗</a><a class="button secondary copy-button" href="${agentHelp}" target="_blank" rel="noopener">Penjelasan AI agent ↗</a></div>` : ''}
+     ${id === 'skill' ? `<a class="text-link" href="${skillHelp}" target="_blank" rel="noopener">Panduan resmi Keahlian Gemini ↗</a>` : ''}`,
+    () => `<h3>Contoh dan hasil yang diharapkan</h3>
       <p>${module.example.note}</p>
       <div class="practice-actions">${openGemini}${materials(module, true)}</div>
       ${module.example.starter ? textBox('example-starter-' + id, 'Prompt awal', 'Salin prompt') : ''}
-      ${id === 'skill' ? skillFields('example') : ''}
-      ${hasPrompt ? textBox('example-prompt-' + id, id === 'skill' ? 'Petunjuk keahlian · Asisten Akademik Dosen' : 'Prompt contoh', 'Salin prompt') : ''}
-      ${id === 'skill' ? skillCases('example') : ''}
+      ${hasPrompt ? textBox('example-prompt-' + id, 'Prompt contoh', 'Salin prompt') : ''}
       ${module.example.input ? textBox('example-input-' + id, 'Cuplikan bahan', 'Salin bahan') : ''}
       <h4 class="example-output-title">Contoh hasil</h4>
       <pre class="example-output" id="example-output-${id}"></pre>
       ${module.dataset ? extractionPractice('example-prompt-ekstraksi', 'Contoh ekstraksi dari formulir PDF') : ''}
       ${id === 'perawatan' ? sopPractice('example-prompt-sop') : ''}`,
-    `<div class="practice" ${module.dataset ? 'id="dataset"' : ''}>
+    () => `<div class="practice" ${module.dataset ? 'id="dataset"' : ''}>
       ${module.dataset ? `${datasetKit}${extractionPractice('prompt-ekstraksi', '1. Cocokkan formulir dengan Excel')}<h4 class="dataset-task-title">2. Audit data dan simpan hasil</h4>` : '<h3>Langkah praktik</h3>'}
       <ol class="practice-steps">${module.steps.map(step => `<li>${step}</li>`).join('')}</ol>
       <div class="practice-actions">
@@ -116,9 +109,7 @@ moduleGrid.innerHTML = modules.map((module, index) => {
         ${materials(module)}
         ${module.dataset || ['verifikasi', 'pemasangan', 'uji', 'perawatan', 'demonstrasi'].includes(id) ? downloadMaterial('buku-kerja-pbk-fdk.xlsx', 'buku kerja Excel dengan contoh') : ''}
       </div>
-      ${id === 'skill' ? skillFields('practice') : ''}
-      ${hasPrompt ? textBox(promptId, id === 'skill' ? 'Petunjuk keahlian · Asisten Akademik Dosen' : 'Prompt siap pakai', module.dataset ? 'Salin prompt audit' : 'Salin prompt') : ''}
-      ${id === 'skill' ? skillCases('practice') : ''}
+      ${hasPrompt ? textBox(promptId, 'Prompt siap pakai', module.dataset ? 'Salin prompt audit' : 'Salin prompt') : ''}
       ${module.dataset ? `
         <details class="client-practice" id="data-klien">
           <summary>Praktik dengan data klien jika disetujui</summary>
@@ -137,18 +128,23 @@ moduleGrid.innerHTML = modules.map((module, index) => {
       <p><strong>Jika AI belum bisa diakses.</strong> ${module.offline}</p>
       <p><strong>Bukti yang disimpan.</strong> ${module.output}</p>
     </div>`,
-    `<h3>${module.check[0]}</h3>
+    () => `<h3>${module.check[0]}</h3>
      <details class="answer"><summary>Lihat pembahasan</summary><p>${module.check[1]}</p></details>
      <p><strong>Pemetaan latihan</strong> · ${module.unit}</p>`
   ];
+  const activeStages = [0];
+  if (module.example) activeStages.push(1);
+  if (module.steps) activeStages.push(2);
+  if (module.check) activeStages.push(3);
+  const body = activeStages.length === 1
+    ? `<div class="lesson-panel">${stages[0]()}</div>`
+    : `<div class="lesson-tabs" role="tablist" aria-label="Tahap ${module.title}">
+        ${activeStages.map((stage, position) => `<button type="button" role="tab" id="${id}-tab-${stage}" aria-controls="${id}-stage-${stage}" aria-selected="${position === 0}" tabindex="${position === 0 ? 0 : -1}">${position + 1}. ${stageNames[stage]}</button>`).join('')}
+      </div>
+      ${activeStages.map((stage, position) => `<div class="lesson-panel" role="tabpanel" id="${id}-stage-${stage}" aria-labelledby="${id}-tab-${stage}" tabindex="0"${position ? ' hidden' : ''}>${stages[stage]()}</div>`).join('')}`;
   return `<details class="module" id="blok-${id}">
     <summary><span class="module-index">${String(index + 1).padStart(2, '0')}</span><span>${module.title}</span></summary>
-    <div class="module-body">
-      <div class="lesson-tabs" role="tablist" aria-label="Tahap ${module.title}">
-        ${stageNames.map((name, stage) => `<button type="button" role="tab" id="${id}-tab-${stage}" aria-controls="${id}-stage-${stage}" aria-selected="${stage === 0}" tabindex="${stage === 0 ? 0 : -1}" data-stage="${stage}">${stage + 1}. ${name}</button>`).join('')}
-      </div>
-      ${stages.map((body, stage) => `<div class="lesson-panel" role="tabpanel" id="${id}-stage-${stage}" aria-labelledby="${id}-tab-${stage}" tabindex="0"${stage ? ' hidden' : ''}>${body}</div>`).join('')}
-    </div>
+    <div class="module-body">${body}</div>
   </details>`;
 }).join('');
 
@@ -159,9 +155,11 @@ for (const module of modules) {
     document.getElementById('prompt-' + id).textContent = prompt;
     document.getElementById('example-prompt-' + id).textContent = prompt;
   }
-  if (module.example.starter) document.getElementById('example-starter-' + id).textContent = module.example.starter;
-  if (module.example.input) document.getElementById('example-input-' + id).textContent = module.example.input;
-  document.getElementById('example-output-' + id).textContent = module.example.output;
+  if (module.example) {
+    if (module.example.starter) document.getElementById('example-starter-' + id).textContent = module.example.starter;
+    if (module.example.input) document.getElementById('example-input-' + id).textContent = module.example.input;
+    document.getElementById('example-output-' + id).textContent = module.example.output;
+  }
 }
 document.querySelector('#master-prompt').textContent = masterPrompt;
 document.querySelector('#prompt-data-klien').textContent = clientDataPrompt;
@@ -169,13 +167,6 @@ document.querySelector('#prompt-ekstraksi').textContent = extractionPrompt;
 document.querySelector('#example-prompt-ekstraksi').textContent = extractionPrompt;
 document.querySelector('#prompt-sop').textContent = sopPrompt;
 document.querySelector('#example-prompt-sop').textContent = sopPrompt;
-for (const prefix of ['example', 'practice']) {
-  document.getElementById(prefix + '-skill-name').textContent = skillName;
-  document.getElementById(prefix + '-skill-description').textContent = skillDescription;
-  for (const [index, request] of skillRequests.entries()) {
-    document.getElementById(prefix + '-skill-request-' + index).textContent = request;
-  }
-}
 
 const caseSelect = document.querySelector('#dataset-case');
 const datasetDownload = document.querySelector('#dataset-download');
@@ -235,7 +226,8 @@ function openHashModule() {
   const clientLink = location.hash === '#data-klien';
   const sopLink = location.hash === '#uji-sop';
   const datasetLink = clientLink || location.hash === '#dataset';
-  const target = modules.find(module => datasetLink ? module.dataset : sopLink ? module.id === 'perawatan' : location.hash === '#blok-' + module.id);
+  const moduleHash = location.hash === '#blok-agent' ? '#blok-orientasi' : location.hash;
+  const target = modules.find(module => datasetLink ? module.dataset : sopLink ? module.id === 'perawatan' : moduleHash === '#blok-' + module.id);
   if (!target) return;
   search.value = '';
   filterModules();
