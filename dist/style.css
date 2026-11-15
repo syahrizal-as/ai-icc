@@ -128,6 +128,17 @@ summary:hover { background: #f2f6f7; border-radius: inherit }
 .concepts > div, .practice { background: #f1f5f6; border: 1px solid var(--line); border-radius: 7px; padding: 12px }
 .concepts dt { font-weight: 750 }
 .concepts dd { margin: 3px 0 0; color: var(--muted); font-size: .92rem }
+.model-guide { margin-top: 23px }
+.model-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(245px, 100%), 1fr)); gap: 12px; margin-top: 12px }
+.model-card { border: 1px solid var(--line); border-top: 3px solid var(--blue); border-radius: 7px; padding: 14px; background: #f1f5f6 }
+.model-card h4 { margin: 0; font-size: 1.08rem }
+.model-card h4 span { color: var(--muted); font-size: .87rem; font-weight: 600 }
+.model-card dl { margin: 9px 0 0 }
+.model-card dl > div { border-bottom: 1px solid var(--line); padding: 7px 0 }
+.model-card dt { font-size: .92rem; font-weight: 750 }
+.model-card dd { margin: 2px 0 0; color: var(--muted); font-size: .89rem }
+.model-card dd span { display: block; margin-top: 2px }
+.model-card > a { display: inline-block; margin-top: 7px }
 .practice-steps { padding-inline-start: 22px; margin: 10px 0 14px }
 .practice-steps li + li { margin-top: 5px }
 .text-box { margin-top: 12px; border-radius: 8px; background: var(--navy); color: var(--white) }
