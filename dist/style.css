@@ -153,6 +153,12 @@ summary:hover { background: #f2f6f7; border-radius: inherit }
 .answer { margin-top: 12px }
 .answer summary { grid-template-columns: 1fr auto }
 .answer p { margin: 0 18px 15px }
+.review-list { padding-inline-start: 24px; margin: 18px 0 }
+.review-list > li { padding: 10px 0 15px; border-bottom: 1px solid var(--line) }
+.review-list > li::marker { font-weight: 750; color: var(--blue) }
+.review-list h4 { margin: 0; font-size: 1rem }
+.review-list > li > p { margin-top: 3px }
+.review-list .answer { margin-top: 8px }
 pre { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--navy); background: #edf3f5; border-radius: 8px; padding: 12px; font: .88rem/1.55 var(--font); user-select: text; margin: 10px 0 }
 .copy-button { min-height: 37px; padding: 8px 11px; font-size: .8rem }
 
