@@ -83,6 +83,33 @@ const sopPractice = (id, isPractice = false) => `<div class="dataset-task"${isPr
 </div>`;
 
 const stageNames = ['Kenali', 'Lihat Contoh', 'Coba Sendiri', 'Cek Pemahaman'];
+function renderReview(module) {
+  const mapping = `<p><strong>Pemetaan latihan</strong> · ${module.unit}</p>`;
+  if (!module.review) {
+    const [question, answer] = module.check;
+    return `<h3>${question}</h3>
+      <details class="answer"><summary>Lihat pembahasan</summary><p>${answer}</p></details>
+      ${mapping}`;
+  }
+  return `<section id="cek-validasi-data" aria-labelledby="judul-cek-validasi">
+    <h3 id="judul-cek-validasi" tabindex="-1">Cek pemahaman validasi data</h3>
+    <p>Buka tab Data mentah pada dataset akademik. Untuk tiap soal, tentukan temuan, keputusan, dan catatan audit sebelum membuka pembahasan. Nomor baris data mengikuti kolom Baris di Excel.</p>
+    <div class="practice-actions">
+      ${materials(module, true)}
+      ${downloadMaterial('formulir-umpan-balik.pdf', 'formulir sumber (PDF)')}
+      ${downloadMaterial('buku-kerja-pbk-fdk.xlsx', 'buku kerja Excel dengan contoh')}
+    </div>
+    <ol class="review-list">
+      ${module.review.map(({topic, question, answer}) => `<li>
+        <h4>${topic}</h4>
+        <p>${question}</p>
+        <details class="answer"><summary>Lihat pembahasan: ${topic}</summary><p>${answer}</p></details>
+      </li>`).join('')}
+    </ol>
+    ${mapping}
+  </section>`;
+}
+
 const aiModelGuide = `<section class="model-guide" id="pilihan-model-ai" aria-labelledby="model-guide-title">
   <h3 id="model-guide-title" tabindex="-1">ChatGPT, Claude, dan Gemini</h3>
   <p>Bandingkan kelebihan model dan contoh tugasnya. Pilihan ini dapat berubah mengikuti paket dan pengaturan akun.</p>
@@ -143,14 +170,12 @@ moduleGrid.innerHTML = modules.map((module, index) => {
       <p><strong>Jika AI belum bisa diakses.</strong> ${module.offline}</p>
       <p><strong>Bukti yang disimpan.</strong> ${module.output}</p>
     </div>`,
-    () => `<h3>${module.check[0]}</h3>
-     <details class="answer"><summary>Lihat pembahasan</summary><p>${module.check[1]}</p></details>
-     <p><strong>Pemetaan latihan</strong> · ${module.unit}</p>`
+    () => renderReview(module)
   ];
   const activeStages = [0];
   if (module.example) activeStages.push(1);
   if (module.steps) activeStages.push(2);
-  if (module.check) activeStages.push(3);
+  if (module.check || module.review) activeStages.push(3);
   const body = activeStages.length === 1
     ? `<div class="lesson-panel">${stages[0]()}</div>`
     : `<div class="lesson-tabs" role="tablist" aria-label="Tahap ${module.title}">
@@ -241,8 +266,11 @@ function openHashModule() {
   const clientLink = location.hash === '#data-klien';
   const sopLink = location.hash === '#uji-sop';
   const datasetLink = clientLink || location.hash === '#dataset';
+  const reviewLink = location.hash === '#cek-validasi-data';
   const modelsLink = location.hash === '#pilihan-model-ai';
-  const moduleHash = modelsLink || location.hash === '#blok-agent' ? '#blok-orientasi' : location.hash;
+  let moduleHash = location.hash;
+  if (modelsLink || moduleHash === '#blok-agent') moduleHash = '#blok-orientasi';
+  if (reviewLink) moduleHash = '#blok-data';
   const target = modules.find(module => datasetLink ? module.dataset : sopLink ? module.id === 'perawatan' : moduleHash === '#blok-' + module.id);
   if (!target) return;
   search.value = '';
@@ -251,9 +279,10 @@ function openHashModule() {
   detail.open = true;
   if (datasetLink || sopLink) showStage(document.getElementById(target.id + '-tab-2'));
   if (modelsLink) showStage(document.getElementById('orientasi-tab-0'));
-  const section = datasetLink || sopLink || modelsLink ? document.querySelector(location.hash) : detail;
+  if (reviewLink) showStage(document.getElementById('data-tab-3'));
+  const section = datasetLink || sopLink || modelsLink || reviewLink ? document.querySelector(location.hash) : detail;
   if (clientLink) section.open = true;
-  const focus = modelsLink ? section.querySelector('h3')
+  const focus = modelsLink || reviewLink ? section.querySelector('h3')
     : datasetLink || sopLink ? section.querySelector('summary, a') : detail.querySelector('summary');
   focus.focus({ preventScroll: true });
   section.scrollIntoView();

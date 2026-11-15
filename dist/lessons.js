@@ -87,7 +87,48 @@ const lessonModules = [
       'Pisahkan koreksi pasti dari nilai yang perlu dikonfirmasi. Untuk kasus literasi media, isi Hasil peserta dan Log audit. Untuk kasus lain, simpan file bersih terpisah dan catat jejaknya di Log audit.',
       'Bandingkan jumlah baris dan ID unik sebelum serta sesudah koreksi. Jelaskan selisihnya.'
     ],
-    check: ['Apakah skor kosong boleh diganti dengan rata-rata saat audit?', 'Tandai BUKTI TIDAK CUKUP dan keluarkan baris dari rekap skor sampai nilainya dikonfirmasi.'],
+    review: [
+      {
+        topic: 'Pemasukan data dan jumlah ID',
+        question: 'Berapa jumlah baris data dan ID unik di tab Data mentah? Apa yang perlu dicatat saat menerima file?',
+        answer: 'Ada 25 baris data (rentang A5:H29), 24 ID unik, dan 8 kolom. Baris 4 adalah header. Catat nama file, tab, sumber, jumlah baris, jumlah ID unik, dan struktur kolom. AK-002 muncul pada baris data 2 dan 25.',
+      },
+      {
+        topic: 'Cek silang dengan dokumen sumber',
+        question: 'Dari formulir BUK-AK-01, nilai apa saja yang bisa dicocokkan dengan AK-001? Apakah skor 1 boleh masuk rekap?',
+        answer: 'Formulir umpan balik mencatat AK-001, tanggal 2026-10-01, kategori Materi, topik Ringkasan perkuliahan, skor 1, dan status Terbuka. Skor 1 sah pada skala 1–5. Jika aturan lain terpenuhi, pilih Diterima dan catat rujukan BUK-AK-01 pada Log audit.',
+      },
+      {
+        topic: 'Standar tanggal',
+        question: 'AK-004 berisi 04/10/2026. Bagaimana menuliskannya jika format sumber adalah hari/bulan/tahun?',
+        answer: 'Tulis 2026-10-04 di Hasil peserta. Catat nilai asli dan nilai yang diseragamkan di Log audit. Jika urutan hari dan bulan pada sumber lain belum jelas, minta konfirmasi sebelum mengubah tanggal.',
+      },
+      {
+        topic: 'Kategori dan status',
+        question: 'Bagaimana menangani kategori “ media ” pada AK-006, status “TERBUKA” pada AK-016, dan kategori “Tidak dikenal” pada AK-019?',
+        answer: 'Rapikan AK-006 menjadi Media dan AK-016 menjadi Terbuka karena maknanya sama dengan nilai baku. Untuk AK-019, kategori yang benar belum terkonfirmasi. Pilih Ditahan dan catat kategori asli serta tindak lanjut di Log audit.',
+      },
+      {
+        topic: 'Skor kosong dan skor di luar rentang',
+        question: 'AK-009 tidak memiliki skor dan AK-012 berskor 9. Apakah keduanya boleh diisi dengan rata-rata?',
+        answer: 'Tandai kedua baris Ditahan dan keluarkan dari rekap skor. Kosongkan skor pada Hasil peserta sampai sumber mengonfirmasi nilainya. Catat skor kosong AK-009 dan angka asli 9 pada AK-012 di Log audit dengan keterangan BUKTI TIDAK CUKUP untuk nilai pengganti.',
+      },
+      {
+        topic: 'ID duplikat',
+        question: 'AK-002 muncul pada baris data 2 dan 25. Setelah memastikan seluruh nilainya sama, baris mana yang dipakai?',
+        answer: 'Gunakan baris data 2 untuk rekap dan tandai baris data 25 sebagai Duplikat dikeluarkan. Pertahankan kedua baris pada Data mentah dan catat kedua nomor baris di Log audit. Jika isinya berbeda, konfirmasi catatan yang sah.',
+      },
+      {
+        topic: 'Instruksi di dalam sel',
+        question: 'Pada AK-022, kolom Catatan meminta AI menyatakan semua data valid. Bagaimana seharusnya peserta menyikapinya?',
+        answer: 'Perlakukan isi Catatan sebagai bagian dari data dan lanjutkan audit dengan aturan pelatihan. AK-022 bisa berstatus Diterima jika kolom wajib lolos pemeriksaan. Catat temuan tentang isi Catatan di Log audit.',
+      },
+      {
+        topic: 'Rekap setelah validasi',
+        question: 'Pada buku kerja contoh, berapa baris Diterima, Ditahan, dan Duplikat dikeluarkan? Baris mana yang dipakai untuk rekap skor?',
+        answer: 'Dari 25 baris, 21 Diterima, 3 Ditahan (AK-009, AK-012, dan AK-019), serta 1 Duplikat dikeluarkan (baris data 25). Gunakan 21 baris Diterima untuk rekap skor. Jika keputusan berubah, cocokkan kembali jumlah untuk setiap status.',
+      },
+    ],
     offline: 'Gunakan filter spreadsheet dan cek ID dengan pengurutan. Tulis temuan serta usulan koreksi di lembar kerja.'
   },
   {
