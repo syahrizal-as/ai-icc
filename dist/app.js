@@ -313,8 +313,8 @@ document.addEventListener('keydown', event => {
   }
 });
 
-document.querySelector('#units').innerHTML = units.map(([code, title, activity, evidence]) => `
-  <article class="unit-card"><span class="unit-code">${code}</span><h3>${title}</h3><p>${activity}</p><dl><dt>Bukti minimum</dt><dd>${evidence}</dd></dl></article>`).join('');
+document.querySelector('#units').innerHTML = units.map(([code, title, activity]) => `
+  <article class="unit-card"><span class="unit-code">${code}</span><h3>${title}</h3><p>${activity}</p></article>`).join('');
 
 document.querySelector('#rubric-rows').innerHTML = rubric.map(([dimension, ...levels]) => `
   <tr><th scope="row">${dimension}</th>${levels.map(level => `<td>${level}</td>`).join('')}</tr>`).join('');

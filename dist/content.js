@@ -1,10 +1,10 @@
 const units = [
-  ['J.63OPR00.014.2', 'Melakukan Pemasukan Data', 'Masukkan data dari sumber yang disetujui dan periksa struktur serta format.', 'Log pemasukan, sumber, struktur atau jumlah data, dan penanganan kesalahan.'],
-  ['J.63OPR00.015.2', 'Memastikan Validitas Data', 'Periksa tipe, format, nilai kosong, duplikasi, konsistensi, dan pencilan.', 'Aturan validasi, laporan sebelum dan sesudah, dan sampel koreksi.'],
-  ['J.62AIN00.014.1', 'Mengintegrasikan Komponen Solusi Artificial Intelligence (AI)', 'Hubungkan input, instruksi, komponen AI, keluaran, dan peninjauan manusia.', 'Diagram, konfigurasi tanpa kredensial, dan hasil uji menyeluruh.'],
-  ['J.62AIN00.015.1', 'Memasang Solusi Artificial Intelligence (AI)', 'Pasang prototipe di lingkungan latihan dan jalankan uji fungsi dasar.', 'Checklist, catatan pemasangan, dan hasil smoke test.'],
-  ['J.62AIN00.016.1', 'Merencanakan Perawatan Solusi Artificial Intelligence (AI)', 'Tetapkan indikator, jadwal, tanggung jawab, dan prosedur pemulihan.', 'Rencana perawatan, cadangan, rollback, dan prosedur eskalasi.'],
-  ['J.62AIN00.017.1', 'Merawat Solusi Artificial Intelligence (AI)', 'Diagnosis gangguan, coba perbaikan, dan jalankan kembali pengujian.', 'Tiket, log perubahan, hasil uji ulang, dan keputusan lanjut atau rollback.']
+  ['J.63OPR00.014.2', 'Melakukan Pemasukan Data', 'Masukkan data dari sumber yang disetujui dan periksa struktur serta format.'],
+  ['J.63OPR00.015.2', 'Memastikan Validitas Data', 'Periksa tipe, format, nilai kosong, duplikasi, konsistensi, dan pencilan.'],
+  ['J.62AIN00.014.1', 'Mengintegrasikan Komponen Solusi Artificial Intelligence (AI)', 'Hubungkan input, instruksi, komponen AI, keluaran, dan peninjauan manusia.'],
+  ['J.62AIN00.015.1', 'Memasang Solusi Artificial Intelligence (AI)', 'Pasang prototipe di lingkungan latihan dan jalankan uji fungsi dasar.'],
+  ['J.62AIN00.016.1', 'Merencanakan Perawatan Solusi Artificial Intelligence (AI)', 'Tetapkan indikator, jadwal, tanggung jawab, dan prosedur pemulihan.'],
+  ['J.62AIN00.017.1', 'Merawat Solusi Artificial Intelligence (AI)', 'Diagnosis gangguan, coba perbaikan, dan jalankan kembali pengujian.']
 ];
 
 const rubric = [
