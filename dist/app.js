@@ -48,10 +48,10 @@ function textBox(id, title, copyLabel) {
 const datasetKit = `<div class="dataset-kit">
   <p class="eyebrow">BAHAN LATIHAN</p>
   <h3>Paket dataset untuk dosen</h3>
-  <p>Gunakan kasus evaluasi kegiatan literasi media. Simpan satu salinan buku kerja untuk mencatat pemasukan data, audit, uji AI, dan perawatan.</p>
+  <p>Buku kerja sudah berisi contoh validasi dan audit untuk kasus evaluasi literasi media. Simpan salinannya, periksa contoh, lalu sesuaikan sel kuning dengan kasus dan hasil uji Anda.</p>
   <div class="practice-actions">
     <a class="button primary" href="dataset/paket-dataset-pbk-fdk.zip" download>Unduh paket lengkap ZIP ↓</a>
-    ${downloadMaterial('buku-kerja-pbk-fdk.xlsx', 'buku kerja Excel')}
+    ${downloadMaterial('buku-kerja-pbk-fdk.xlsx', 'buku kerja Excel dengan contoh')}
     ${downloadMaterial('panduan-dataset-fdk.pdf', 'panduan PDF')}
     ${downloadMaterial('kalkulator-biaya-ai.xlsx', 'kalkulator biaya opsional')}
   </div>
@@ -114,7 +114,7 @@ moduleGrid.innerHTML = modules.map((module, index) => {
       <div class="practice-actions">
         ${openGemini}
         ${materials(module)}
-        ${module.dataset || ['verifikasi', 'pemasangan', 'uji', 'perawatan', 'demonstrasi'].includes(id) ? downloadMaterial('buku-kerja-pbk-fdk.xlsx', 'buku kerja Excel') : ''}
+        ${module.dataset || ['verifikasi', 'pemasangan', 'uji', 'perawatan', 'demonstrasi'].includes(id) ? downloadMaterial('buku-kerja-pbk-fdk.xlsx', 'buku kerja Excel dengan contoh') : ''}
       </div>
       ${id === 'skill' ? skillFields('practice') : ''}
       ${hasPrompt ? textBox(promptId, id === 'skill' ? 'Petunjuk keahlian · Asisten Akademik Dosen' : 'Prompt siap pakai', module.dataset ? 'Salin prompt audit' : 'Salin prompt') : ''}
