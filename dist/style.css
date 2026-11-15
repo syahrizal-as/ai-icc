@@ -164,9 +164,6 @@ pre { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--navy); backgr
 
 .unit-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px }
 .unit-code { color: var(--blue); font-size: .77rem; font-weight: 800; letter-spacing: .035em; display: block; margin-bottom: 10px }
-.unit-card dl { margin: 13px 0 0; border-top: 1px solid var(--line); padding-top: 11px }
-.unit-card dt { font-weight: 750; font-size: .8rem }
-.unit-card dd { margin: 2px 0 0; color: var(--muted); font-size: .9rem }
 .notice { border-top: 1px solid #b9cdd4; margin-top: 26px; padding-top: 17px; max-width: 83ch }
 .notice p { color: var(--muted); font-size: .93rem; margin-top: 8px }
 .source-links { display: flex; gap: 8px 20px; flex-wrap: wrap; color: var(--blue); font-size: .87rem; font-weight: 700; margin-top: 10px }
